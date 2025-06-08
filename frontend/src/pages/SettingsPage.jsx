@@ -16,20 +16,20 @@ import { sunsetTheme } from "../themes/sunsetTheme";
 
 // Tema bilgilerini array olarak tanımla
 const themes = [
-  { ...classicalLight.themeInfo },
-  { ...classicalDark.themeInfo },
-  { ...coffeeTheme.themeInfo },
-  { ...darkGreenTheme.themeInfo },
-  { ...darkBlueTheme.themeInfo },
-  { ...colorPopTheme.themeInfo },
-  { ...natureTheme.themeInfo },
-  { ...neonTheme.themeInfo },
-  { ...pastelTheme.themeInfo },
-  { ...darkPastelTheme.themeInfo },
-  { ...sunsetTheme.themeInfo },
+  { ...classicalLight.themeInfo, themeObj:classicalLight },
+  { ...classicalDark.themeInfo, themeObj:classicalDark },
+  { ...coffeeTheme.themeInfo, themeObj:coffeeTheme },
+  { ...darkGreenTheme.themeInfo, themeObj:darkGreenTheme },
+  { ...darkBlueTheme.themeInfo, themeObj:darkBlueTheme },
+  { ...colorPopTheme.themeInfo, themeObj:colorPopTheme },
+  { ...natureTheme.themeInfo, themeObj:natureTheme },
+  { ...neonTheme.themeInfo, themeObj:neonTheme },
+  { ...pastelTheme.themeInfo, themeObj:pastelTheme },
+  { ...darkPastelTheme.themeInfo, themeObj:darkPastelTheme },
+  { ...sunsetTheme.themeInfo, themeObj:sunsetTheme },
 ];
 
-function SettingsPage() {
+function SettingsPage({setCurrentTheme}) {
   return (
     <SidebarLayout>
       <div className="themes-container">
@@ -38,6 +38,7 @@ function SettingsPage() {
             <Col key={idx} xs={24} sm={12} md={12} lg={6} xl={6}>
               <Card
                 hoverable
+                onClick={() => setCurrentTheme(theme.themeObj)}
                 style={{
                   background: theme.backgroundPrimary,
                   color: theme.colorText,
