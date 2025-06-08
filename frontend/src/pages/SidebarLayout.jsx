@@ -6,18 +6,27 @@ import {
   SettingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 
 const { Sider, Content } = Layout;
 
 function SidebarLayout({ children }) {
   const navigate = useNavigate();
+  const location = useLocation(); // aktif route'u al
   const { logout } = useAuthStore();
 
   const handleLogout = async () => {
     await logout();
     navigate("/login");
+  };
+
+  // Route ile menü key'lerini eşleştir
+  const getSelectedKey = () => {
+    if (location.pathname.startsWith("/profile")) return "profile";
+    if (location.pathname.startsWith("/settings")) return "settings";
+    if (location.pathname === "/") return "home";
+    return "";
   };
 
   return (
@@ -32,7 +41,7 @@ function SidebarLayout({ children }) {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["home"]}
+          selectedKeys={[getSelectedKey()]} // Burada dinamik olarak seçili key'i veriyoruz
           style={{ height: "100%", borderRight: 0 }}
         >
           <Menu.Item key="home" icon={<HomeOutlined />}>

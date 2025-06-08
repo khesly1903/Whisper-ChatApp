@@ -1,25 +1,19 @@
 import React from "react";
-
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
-
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-
-import { Spin } from "antd";
-
-import { Toaster } from "react-hot-toast"
+import { Spin, theme } from "antd"; // useTheme yerine theme import et
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { token } = theme.useToken(); // Doğru kullanım!
 
-  // check auth whether app is open or page is refreshed
-  // dependency is checkauth
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -29,7 +23,7 @@ function App() {
   if (isCheckingAuth && !authUser) return <Spin spinning={true} fullscreen />;
 
   return (
-    <div>
+    <div style={{ backgroundColor: token.colorBgBase, minHeight: "100vh" }}>
       <Routes>
         <Route
           path="/"
@@ -49,8 +43,7 @@ function App() {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
       </Routes>
-
-      <Toaster/>
+      <Toaster />
     </div>
   );
 }

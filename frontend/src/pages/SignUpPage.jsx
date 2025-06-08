@@ -65,8 +65,8 @@ function SignUpPage() {
   };
 
   return (
-    <div className="signup-container center-flex">
-      <form className="signupform center-flex" onSubmit={handleSubmit}>
+    <div className="account-container center-flex">
+      <form className="account center-flex" onSubmit={handleSubmit}>
         <Title level={2}>Sign Up</Title>
         <Input
           placeholder="Full Name"
@@ -75,14 +75,12 @@ function SignUpPage() {
           onChange={(e) =>
             setFormData({ ...formData, fullName: e.target.value })
           }
-          style={{ marginBottom: 16 }}
         />
         <Input
           placeholder="Email"
           prefix={<MailOutlined />}
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          style={{ marginBottom: 16 }}
         />
         <Input.Password
           placeholder="Enter your password"
@@ -91,7 +89,6 @@ function SignUpPage() {
           onChange={(e) =>
             setFormData({ ...formData, password: e.target.value })
           }
-          style={{ marginBottom: 16 }}
           visibilityToggle={{
             visible: showPassword,
             onVisibleChange: setShowPassword,
@@ -105,7 +102,6 @@ function SignUpPage() {
           prefix={<LockOutlined />}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          style={{ marginBottom: 16 }}
           visibilityToggle={{
             visible: showPassword,
             onVisibleChange: setShowPassword,
