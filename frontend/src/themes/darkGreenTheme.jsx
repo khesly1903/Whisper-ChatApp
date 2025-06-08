@@ -1,26 +1,34 @@
 export const darkGreenTheme = {
   token: {
-    colorPrimary: "#238636",         // GitHub koyu yeşil
-    colorBgBase: "#0d1117",          // Ana arka plan (GitHub dark)
-    colorBgLayout: "#161b22",        // Layout arka planı
-    colorTextBase: "#c9d1d9",        // Ana yazı rengi
-    colorBorder: "#30363d",          // Sınır rengi
-    borderRadius: 8,
-    colorTextPlaceholder: "#8b949e", // Placeholder rengi
+    colorPrimary: "#27ae60",         // Canlı koyu yeşil (ana renk)
+    colorBgBase: "#151d17",          // Ana arka plan (çok koyu yeşil ton)
+    colorBgLayout: "#1e2b22",        // Layout arka planı (biraz daha açık)
+    colorTextBase: "#e6f4ea",        // Açık yeşilimsi beyaz (yazı rengi)
+    colorBorder: "#2d4735",          // Sınır rengi (yeşil-gri)
+    borderRadius: 10,
+    colorTextPlaceholder: "#7fbf97", // Soluk yeşil (placeholder)
   },
   components: {
     Button: {
-      colorPrimary: "#238636",
-      colorText: "#f0f6fc",
-      colorBorder: "#30363d",
-      borderRadius: 8,
+      colorPrimary: "#27ae60",
+      colorText: "#fff",
+      colorBorder: "#2d4735",
+      borderRadius: 10,
     },
     Input: {
-      colorBgContainer: "#161b22",
-      colorBorder: "#30363d",
-      colorText: "#c9d1d9",
-      colorTextPlaceholder: "#8b949e",
-      borderRadius: 8,
+      colorBgContainer: "#1e2b22",
+      colorBorder: "#2d4735",
+      colorText: "#e6f4ea",
+      colorTextPlaceholder: "#7fbf97",
+      borderRadius: 10,
     },
   },
+  themeInfo: {
+    themeName: "Dark Green",
+    backgroundPrimary: "#151d17",      // Card ana arka planı
+    backgroundSecondary: "#1e2b22",    // Card üst/alt veya detay alanı
+    colorPrimary: "#27ae60",           // Ana vurgu rengi
+    colorSecondary: "#14532d",         // Koyu yeşil (ikincil vurgu)
+    colorText: "#e6f4ea"               // Yazı rengi
+  }
 };
