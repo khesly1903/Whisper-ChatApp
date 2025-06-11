@@ -1,4 +1,5 @@
 export const classicalDark = {
+  themeName: "Classical Dark",
   token: {
     colorPrimary: "#34c759",         // Canlı yeşil (ana renk)
     colorBgBase: "#171717",          // Koyu arka plan

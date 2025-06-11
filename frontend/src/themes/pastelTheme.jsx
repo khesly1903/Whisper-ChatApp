@@ -1,4 +1,5 @@
 export const pastelTheme = {
+  themeName:"pastelTheme",
   token: {
     colorPrimary: "#a3c9f9",         // Pastel mavi
     colorBgBase: "#f8f7fa",          // Açık pastel zemin
@@ -10,8 +11,8 @@ export const pastelTheme = {
   },
   themeInfo: {
     themeName: "Pastel",
-    backgroundPrimary: "#f8f7fa",
-    backgroundSecondary: "#fbeffb",
+    backgroundPrimary: "#FFF2EB",
+    backgroundSecondary: "#FFE8CD",
     colorPrimary: "#a3c9f9",
     colorSecondary: "#ffd6e0",
     colorText: "#7d7d7d"

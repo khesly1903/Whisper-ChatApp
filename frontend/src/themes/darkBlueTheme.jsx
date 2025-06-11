@@ -1,4 +1,5 @@
 export const darkBlueTheme = {
+  themeName:"darkBlueTheme",
   token: {
     colorPrimary: "#2563eb",         // Canlı mavi (ana renk)
     colorBgBase: "#0a192f",          // Ana arka plan (çok koyu mavi)

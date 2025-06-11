@@ -1,4 +1,5 @@
 export const natureTheme = {
+  themeName:"natureTheme",
   token: {
     colorPrimary: "#6b8e23",         // Zeytin yeşili
     colorBgBase: "#f4f1ee",          // Toprak tonunda açık zemin
@@ -10,10 +11,10 @@ export const natureTheme = {
   },
   themeInfo: {
     themeName: "Nature",
-    backgroundPrimary: "#f4f1ee",
+    backgroundPrimary: "#485242",
     backgroundSecondary: "#b7a16a",
     colorPrimary: "#6b8e23",
     colorSecondary: "#3e4c3a",
-    colorText: "#3e4c3a"
+    colorText: "#ffffff"
   }
 };

@@ -1,4 +1,5 @@
 export const classicalLight = {
+  themeName: "classicalLight",
   token: {
     colorPrimary: "#1677ff",         // Antd varsayılan mavi
     colorBgBase: "#ffffff",          // Beyaz arka plan
@@ -27,8 +28,8 @@ export const classicalLight = {
     themeName: "Light",
     backgroundPrimary: "#ffffff",
     backgroundSecondary: "#f5f5f5",
-    colorPrimary: "#1677ff",
-    colorSecondary: "#52c41a",
+    colorPrimary: "#C5D3E8",
+    colorSecondary: "#C9E9D2",
     colorText: "#1f1f1f"
   }
 };

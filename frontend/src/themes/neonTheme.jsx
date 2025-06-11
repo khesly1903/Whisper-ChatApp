@@ -1,4 +1,5 @@
 export const neonTheme = {
+  themeName:"neonTheme",
   token: {
     colorPrimary: "#00ffe7",         // Neon mavi
     colorBgBase: "#0a0a23",          // Siyah-mor zemin
@@ -12,8 +13,8 @@ export const neonTheme = {
     themeName: "Neon",
     backgroundPrimary: "#0a0a23",
     backgroundSecondary: "#1a0033",
-    colorPrimary: "#00ffe7",
-    colorSecondary: "#ff00cc",
+    colorPrimary: "#4300FF",
+    colorSecondary: "#FF2DF1",
     colorText: "#e0e0ff"
   }
 };

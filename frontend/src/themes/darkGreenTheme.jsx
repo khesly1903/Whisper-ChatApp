@@ -1,4 +1,5 @@
 export const darkGreenTheme = {
+  themeName:"darkGreenTheme",
   token: {
     colorPrimary: "#27ae60",         // Canlı koyu yeşil (ana renk)
     colorBgBase: "#151d17",          // Ana arka plan (çok koyu yeşil ton)

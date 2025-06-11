@@ -1,4 +1,5 @@
 export const sunsetTheme = {
+  themeName:"sunsetTheme",
   token: {
     colorPrimary: "#ff6f61",         // Turuncu-kırmızı (gün batımı)
     colorBgBase: "#3d1c4d",          // Mor zemin
@@ -11,7 +12,7 @@ export const sunsetTheme = {
   themeInfo: {
     themeName: "Sunset",
     backgroundPrimary: "#3d1c4d",
-    backgroundSecondary: "#ff6f61",
+    backgroundSecondary: "#F7B5CA",
     colorPrimary: "#ff6f61",
     colorSecondary: "#ffb88c",
     colorText: "#ffe3d3"

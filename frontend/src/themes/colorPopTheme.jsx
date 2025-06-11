@@ -1,4 +1,5 @@
 export const colorPopTheme = {
+  themeName:"colorPopTheme",
   token: {
     colorPrimary: "#ff0080",         // Canlı pembe
     colorBgBase: "#fffbe7",          // Açık sarı zemin
@@ -14,6 +15,6 @@ export const colorPopTheme = {
     backgroundSecondary: "#ffe156",
     colorPrimary: "#ff0080",
     colorSecondary: "#3a86ff",
-    colorText: "#22223b"
+    colorText: "#ffffff"
   }
 };

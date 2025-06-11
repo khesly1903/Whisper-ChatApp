@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Layout, Menu } from "antd";
 import {
   HomeOutlined,
@@ -9,6 +9,9 @@ import {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 
+import { ThemeContext } from "../context/ThemeContext";
+
+
 const { Sider, Content } = Layout;
 
 function SidebarLayout({ children }) {
@@ -16,6 +19,8 @@ function SidebarLayout({ children }) {
   const location = useLocation(); // aktif route'u al
   const { logout } = useAuthStore();
 
+  const theme = useContext(ThemeContext);
+  
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -63,7 +68,7 @@ function SidebarLayout({ children }) {
         </Menu>
       </Sider>
       <Layout>
-        <Content style={{ margin: "24px 16px 0", background: "#181818", borderRadius: 8, padding: 24 }}>
+        <Content style={{background: theme?.themeInfo?.backgroundPrimary, padding: 24 }}>
           {children}
         </Content>
       </Layout>

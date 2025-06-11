@@ -1,4 +1,5 @@
 export const coffeeTheme = {
+  themeName: "coffeeTheme",
   token: {
     colorPrimary: "#6f4e37",         // Coffee ana rengi
     colorBgBase: "#2f1f19",          // Ana arka plan (koyu kahve)
