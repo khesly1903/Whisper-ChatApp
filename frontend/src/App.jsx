@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage";
+import ChatPage from "./pages/ChatPage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -57,7 +58,6 @@ function App() {
   }, [currentTheme]);
 
   useEffect(() => {
-    // Eğer state ilk açılışta default ise ve localStorage'da farklı bir tema varsa, güncelle
     const themeName = localStorage.getItem(THEME_KEY);
     if (themeName && currentTheme.themeName !== themeName) {
       setCurrentTheme(getThemeFromStorage());
@@ -74,6 +74,10 @@ function App() {
           <Route
             path="/"
             element={authUser ? <HomePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/deneme"
+            element={authUser ? <ChatPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/signup"

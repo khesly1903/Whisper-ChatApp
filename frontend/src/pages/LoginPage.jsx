@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Input, Button, Typography } from "antd";
 import {
   EyeInvisibleOutlined,
@@ -11,9 +11,11 @@ import "../styles/signuppage.css";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { ThemeContext } from "../context/ThemeContext";
 
 function LoginPage() {
   const { Title, Text } = Typography;
+  const theme = useContext(ThemeContext);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -44,7 +46,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="account-container center-flex">
+    <div className="account-container center-flex" style={{background: theme?.themeInfo?.backgroundPrimary}}>
       <form className="account center-flex" onSubmit={handleSubmit}>
         <Title level={2}>Log in</Title>
 

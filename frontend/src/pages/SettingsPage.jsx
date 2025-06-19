@@ -1,5 +1,5 @@
 import React from "react";
-import SidebarLayout from "./SidebarLayout";
+
 
 import { Row, Col, Card, Space, Input, Button, Avatar } from "antd";
 import { SendOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
@@ -16,6 +16,7 @@ import { pastelTheme } from "../themes/pastelTheme";
 import { darkPastelTheme } from "../themes/darkPastelTheme";
 import { sunsetTheme } from "../themes/sunsetTheme";
 import { MessageBubble } from "../components/MessageBubble";
+import Navbar from "../components/Navbar";
 
 // Tema bilgilerini array olarak tanımla
 const themes = [
@@ -34,7 +35,10 @@ const themes = [
 
 function SettingsPage({ currentTheme, setCurrentTheme }) {
   return (
-    <SidebarLayout>
+    <Navbar>
+      <div style={{marginTop:"3.5rem", padding:"1rem", minHeight:"100vh"}}>
+
+      
       <div className="themes-container">
         <Row gutter={[16, 16]}>
           {themes.map((theme, idx) => (
@@ -46,7 +50,7 @@ function SettingsPage({ currentTheme, setCurrentTheme }) {
                   background: theme.backgroundPrimary,
                   color: theme.colorText,
                   border: "1px solid",
-                  borderColor: theme.backgroundPrimary
+                  borderColor: theme.backgroundPrimary,
                   // border: "none",
                 }}
                 cover={
@@ -187,7 +191,8 @@ function SettingsPage({ currentTheme, setCurrentTheme }) {
           </div>
         </div>
       </div>
-    </SidebarLayout>
+      </div>
+    </Navbar>
   );
 }
 
