@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { UserOutlined, UploadOutlined } from "@ant-design/icons";
-import { Avatar, Image, Button, Upload, Typography } from "antd";
+import { Avatar, Image, Button, Upload, Typography, message } from "antd";
 import Navbar from "../components/Navbar";
 
 function ProfilePage() {

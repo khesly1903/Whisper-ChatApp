@@ -24,15 +24,7 @@ function HomePage() {
           }}>
             
           </div>
-          // <div style={{ width: "100%", height: "600px", position: "relative" }}>
-          //   <NoChatSelected
-          //     imageSrc="https://picsum.photos/1920/1080?grayscale"
-          //     grid={10}
-          //     mouse={0.1}
-          //     strength={0.15}
-          //     relaxation={0.9}
-          //   />
-          //  </div>
+          
         ) : (
           <ChatContainer />
         )}

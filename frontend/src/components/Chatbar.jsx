@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import ChatbarSkeleton from "./skeletons/ChatbarSkeleton";
 import { Avatar, Col, Row } from "antd";
 import {
@@ -12,6 +12,7 @@ import {
 import { ThemeContext } from "../context/ThemeContext";
 
 function Chatbar({ children }) {
+
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
     useChatStore();
 
@@ -26,7 +27,8 @@ function Chatbar({ children }) {
 
   const handleLogout = async () => {
     await logout();
-    navigate("/login");
+    Navigate("/login"); 
+    //  it might be a problem
   };
 
   // non-selected user with esc
@@ -41,101 +43,105 @@ function Chatbar({ children }) {
   }, [setSelectedUser]);
 
   return (
-    <>
-      <Row>
-        <Col span={4}>
-          <div
-            style={{
-              position: "fixed",
-              margin: 0,
-              left: 0,
-              width: "20rem",
-              background: theme.themeInfo.backgroundSecondary,
-              height: "100vh",
-              padding: "0.5rem",
-              overflowY: "auto",
-              zIndex: 999,
-              borderRight: "1px solid white",
-            }}
+    <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+      {/* Sidebar */}
+      <div
+        style={{
+          width: "300px",
+          minWidth: "250px",
+          maxWidth: "350px",
+          background: theme.themeInfo.backgroundPrimary,
+          height: "100vh",
+          padding: "0.5rem",
+          overflowY: "auto",
+          flexShrink: 0,
+        }}
+      >
+        {/* settings profile and logout */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "5rem",
+            // border:"1px solid silver",
+            padding:"0.5rem",
+            borderRadius:"0.5rem"
+          }}
+        >
+          <Link
+            to="/settings"
+            style={{ color: theme?.themeInfo?.colorText }}
           >
-            {/* settings profile and logout */}
+            <SettingOutlined style={{ fontSize: "1.5rem" }} />
+          </Link>
+          <Link
+            to="/profile"
+            style={{ color: theme?.themeInfo?.colorText }}
+          >
+            <UserOutlined style={{ fontSize: "1.5rem" }} />
+          </Link>
+          <Link
+            onClick={handleLogout}
+            style={{ color: theme?.themeInfo?.colorText }}
+          >
+            <LogoutOutlined style={{ fontSize: "1.5rem" }} />
+          </Link>
+        </div>
+
+        {isUsersLoading ? (
+          <ChatbarSkeleton />
+        ) : (
+          users.map((user) => (
             <div
+              key={user._id}
+              onClick={() => setSelectedUser(user)}
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "5rem",
-                border:"1px solid silver",
-                padding:"0.5rem",
-                borderRadius:"0.5rem"
+                height: "4rem",
+                padding: "0.5em",
+                cursor: "pointer",
+                borderRadius: "0.5em",
+                backgroundColor:
+                  selectedUser?._id === user._id
+                    ? "#e0e0e0"
+                    : "transparent",
+                color: selectedUser?._id === user._id ? "#000" : "#fff",
               }}
             >
-              <Link
-                to="/settings"
-                style={{ color: theme?.themeInfo?.colorText }}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
               >
-                <SettingOutlined style={{ fontSize: "1.5rem" }} />
-              </Link>
-              <Link
-                to="/profile"
-                style={{ color: theme?.themeInfo?.colorText }}
-              >
-                <UserOutlined style={{ fontSize: "1.5rem" }} />
-              </Link>
-              <Link
-                onClick={handleLogout}
-                style={{ color: theme?.themeInfo?.colorText }}
-              >
-                <LogoutOutlined style={{ fontSize: "1.5rem" }} />
-              </Link>
+                {user.profilePic ? (
+                  <Avatar src={user.profilePic} />
+                ) : (
+                  <Avatar
+                    shape="square"
+                    size={"16rem"}
+                    icon={<UserOutlined />}
+                  />
+                )}
+                {user.fullName}
+              </div>
             </div>
+          ))
+        )}
+      </div>
 
-            {isUsersLoading ? (
-              <ChatbarSkeleton />
-            ) : (
-              users.map((user) => (
-                <div
-                  key={user._id}
-                  onClick={() => setSelectedUser(user)}
-                  style={{
-                    height: "4rem",
-                    padding: "0.5em",
-                    cursor: "pointer",
-                    borderRadius: "0.5em",
-                    backgroundColor:
-                      selectedUser?._id === user._id
-                        ? "#e0e0e0"
-                        : "transparent",
-                    color: selectedUser?._id === user._id ? "#000" : "#fff",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                  >
-                    {user.profilePic ? (
-                      <Avatar src={user.profilePic} />
-                    ) : (
-                      <Avatar
-                        shape="square"
-                        size={"16rem"}
-                        icon={<UserOutlined />}
-                      />
-                    )}
-                    {user.fullName}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </Col>
-
-        <Col span={20}>{children}</Col>
-      </Row>
-    </>
+      {/* Main Content */}
+      <div
+        style={{
+          flex: 1,
+          height: "100vh",
+          overflow: "hidden",
+        }}
+      >
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -149,14 +155,3 @@ export default Chatbar;
 // pp vermek icin
 // <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
 
-{
-  /* <img
-  src={user.profilePicture}
-  style={{
-    width: "2rem",
-    height: "2rem",
-    borderRadius: "50%",
-    marginRight: "0.5rem",
-  }}
-/>; */
-}

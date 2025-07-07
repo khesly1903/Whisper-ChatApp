@@ -39,7 +39,7 @@ function SettingsPage({ currentTheme, setCurrentTheme }) {
       <div style={{marginTop:"3.5rem", padding:"1rem", minHeight:"100vh"}}>
 
       
-      <div className="themes-container">
+      <div>
         <Row gutter={[16, 16]}>
           {themes.map((theme, idx) => (
             <Col key={idx} xs={24} sm={12} md={12} lg={6} xl={6}>
@@ -101,13 +101,19 @@ function SettingsPage({ currentTheme, setCurrentTheme }) {
         <div
           className="theme-demo"
           style={{
+            display:"flex",
+            flexDirection:"column",
+            width:"80%",
+            height:"32rem",
+            margin:"2rem",
+            padding:"2rem",
+            borderRadius:"2rem",
             backgroundColor: currentTheme.themeInfo.backgroundPrimary,
             border: `1px solid ${currentTheme.themeInfo.colorText}`,
           }}
         >
           {/* UST NAVBAR ALANI */}
           <div
-            className="theme-demo-navbar"
             style={{
               display: "flex",
               alignItems: "center",
@@ -141,30 +147,30 @@ function SettingsPage({ currentTheme, setCurrentTheme }) {
           </div>
 
           {/* Message examples */}
-          <div className="theme-demo-messages" style={{ margin: "1.5rem 0" }}>
-            <MessageBubble side="right" isFirst={false}>
+          <div  style={{ margin: "1.5rem 0", flex:"1", overflowY:"auto"}}>
+            <MessageBubble side="right" >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi,
               necessitatibus?
             </MessageBubble>
-            <MessageBubble side="right" isFirst={false}>
+            <MessageBubble side="right" >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
               magnam accusantium quas facere vitae nostrum sunt reprehenderit
               qui eveniet quae.
             </MessageBubble>
 
-            <MessageBubble side="left" isFirst={true}>
+            <MessageBubble side="left" >
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae
               similique rem praesentium vel ipsam inventore unde, in nemo iste
               laudantium iure, eveniet expedita ex ea.
             </MessageBubble>
-            <MessageBubble side="left" isFirst={true}>
+            <MessageBubble side="left" >
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Recusandae quod, eum, magnam qui officiis quidem temporibus
               dolorum consequuntur, cupiditate ex ad excepturi dicta blanditiis
               modi illo voluptate optio numquam id.
             </MessageBubble>
 
-            <MessageBubble side="right" isFirst={false}>
+            <MessageBubble side="right" >
               Lorem ipsum dolor sit amet consectetur, adipisicing elit.
               Suscipit, quae!
             </MessageBubble>
@@ -172,7 +178,7 @@ function SettingsPage({ currentTheme, setCurrentTheme }) {
 
           {/* Message input area*/}
           <div
-            className="theme-demo-message-input center-flex"
+            className="center-flex"
             style={{
               width: "100%",
               gap: 8,

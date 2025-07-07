@@ -71,12 +71,12 @@ function App() {
     <ThemeContext.Provider value={currentTheme}>
       <ConfigProvider theme={currentTheme}>
         <Routes>
-          <Route
+          {/* <Route
             path="/"
             element={authUser ? <HomePage /> : <Navigate to="/login" />}
-          />
+          /> */}
           <Route
-            path="/deneme"
+            path="/"
             element={authUser ? <ChatPage /> : <Navigate to="/login" />}
           />
           <Route

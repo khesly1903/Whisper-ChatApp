@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
-import "antd/dist/reset.css"; // veya "antd/dist/antd.css"
+import "antd/dist/reset.css"; // or "antd/dist/antd.css"
 
 
 
