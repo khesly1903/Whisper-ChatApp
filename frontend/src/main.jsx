@@ -9,7 +9,6 @@ import "antd/dist/reset.css"; // or "antd/dist/antd.css"
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    
       <BrowserRouter>
         <App />
       </BrowserRouter>
