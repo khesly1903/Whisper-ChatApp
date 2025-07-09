@@ -3,7 +3,7 @@ import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link, Navigate } from "react-router-dom";
 import ChatbarSkeleton from "./skeletons/ChatbarSkeleton";
-import { Avatar, Col, Row } from "antd";
+import { Avatar, Badge } from "antd";
 import {
   SettingOutlined,
   UserOutlined,
@@ -16,6 +16,8 @@ function Chatbar({ children }) {
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
     useChatStore();
 
+  const { onlineUsers, logout } = useAuthStore();
+
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
@@ -23,11 +25,10 @@ function Chatbar({ children }) {
   }, [getUsers]);
 
   //logout
-  const { logout } = useAuthStore();
 
   const handleLogout = async () => {
     await logout();
-    Navigate("/login"); 
+    Navigate("/login");
     //  it might be a problem
   };
 
@@ -65,8 +66,8 @@ function Chatbar({ children }) {
             justifyContent: "center",
             gap: "5rem",
             // border:"1px solid silver",
-            padding:"0.5rem",
-            borderRadius:"0.5rem"
+            padding: "0.5rem",
+            borderRadius: "0.5rem"
           }}
         >
           <Link
@@ -108,6 +109,9 @@ function Chatbar({ children }) {
                 color: selectedUser?._id === user._id ? "#000" : "#fff",
               }}
             >
+
+
+
               <div
                 style={{
                   display: "flex",
@@ -116,16 +120,21 @@ function Chatbar({ children }) {
                 }}
               >
                 {user.profilePic ? (
-                  <Avatar src={user.profilePic} />
+                  <Badge dot={onlineUsers.includes(user._id)} status="success" size="small" >
+                    <Avatar src={user.profilePic} />
+                  </Badge>
                 ) : (
-                  <Avatar
-                    shape="square"
-                    size={"16rem"}
-                    icon={<UserOutlined />}
-                  />
+                  <Badge dot={onlineUsers.includes(user._id)} status="success">
+                    <Avatar
+                      shape="square"
+                      size={"16rem"}
+                      icon={<UserOutlined />}
+                    />
+                  </Badge>
                 )}
                 {user.fullName}
               </div>
+
             </div>
           ))
         )}

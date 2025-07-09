@@ -42,13 +42,15 @@ function getThemeFromStorage() {
 }
 
 function App() {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
+  console.log(onlineUsers)
 
   const [currentTheme, setCurrentTheme] = useState(() => getThemeFromStorage());
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+  
   console.log({ authUser });
 
   useEffect(() => {

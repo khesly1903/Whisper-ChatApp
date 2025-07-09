@@ -9,18 +9,19 @@ import { MessageBubble } from "../components/MessageBubble";
 function ChatContainer() {
 
     const theme = useContext(ThemeContext);
-    const { messages, getMessages, isMessagesLoading, selectedUser } = useChatStore()
+    const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore()
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        if (selectedUser?._id) {
-            getMessages(selectedUser._id)
-        }
-    }, [selectedUser._id, getMessages])
+        getMessages(selectedUser._id) //current messages
+        subscribeToMessages()         //realtime functionality
 
-    // Yeni mesaj geldiğinde en alta scroll
+        return () => unsubscribeFromMessages() //cleanup func
+    }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages])
+
+    // scroll bottom auto
     useEffect(() => {
-        if (messagesEndRef.current) {
+        if (messagesEndRef.current && messages) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
@@ -51,11 +52,11 @@ function ChatContainer() {
         }}>
             <ChatHeader />
 
-            {/* Mesajların gösterildiği kaydırılabilir alan */}
+
             <div style={{
                 flex: 1,
-                overflowY: "auto",  // Dikey scroll
-                overflowX: "hidden", // Yatay scroll'u gizle
+                overflowY: "auto",
+                overflowX: "hidden",
                 padding: "1rem",
                 display: "flex",
                 flexDirection: "column",
@@ -74,8 +75,8 @@ function ChatContainer() {
                 ) : (
                     <>
                         {messages.map((message) => (
-                            <MessageBubble 
-                                key={message._id} 
+                            <MessageBubble
+                                key={message._id}
                                 side={message.senderID === selectedUser._id ? "left" : "right"}
                                 image={message.image}
                                 text={message.text}
