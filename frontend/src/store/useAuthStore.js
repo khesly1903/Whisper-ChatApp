@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 
 
-const LOCAL_URL = "http://192.168.1.119:5001"
+const LOCAL_URL = import.meta.env.MODE === "development" ? "http://192.168.1.119:5001" : "/"
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
