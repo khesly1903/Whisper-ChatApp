@@ -14,7 +14,7 @@ dotenv.config()
 
 
 const PORT = process.env.PORT;
-const __dirname = path.resolve
+const __dirname = path.resolve();
 
 // middlewares
 app.use(express.json({ limit: "5mb" })); // extract data from body (req.body)
@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-server.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`)
     connectDB()
 })
