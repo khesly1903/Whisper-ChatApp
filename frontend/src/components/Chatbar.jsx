@@ -29,7 +29,6 @@ function Chatbar({ children }) {
   const handleLogout = async () => {
     await logout();
     Navigate("/login");
-    //  it might be a problem
   };
 
   // non-selected user with esc
@@ -48,9 +47,9 @@ function Chatbar({ children }) {
       {/* Sidebar */}
       <div
         style={{
-          width: "300px",
-          minWidth: "250px",
-          maxWidth: "350px",
+          width: "20rem",
+          minWidth: "17rem",
+          maxWidth: "23rem",
           background: theme.themeInfo.backgroundPrimary,
           height: "100vh",
           padding: "0.5rem",

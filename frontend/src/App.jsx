@@ -92,10 +92,11 @@ function App() {
           <Route
             path="/settings"
             element={
+              authUser ? 
               <SettingsPage
                 currentTheme={currentTheme}
                 setCurrentTheme={setCurrentTheme}
-              />
+              /> : <Navigate to="/"/>
             }
           />
           <Route

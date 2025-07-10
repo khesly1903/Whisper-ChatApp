@@ -4,7 +4,7 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { useAuthStore } from "../store/useAuthStore";
 
@@ -14,7 +14,7 @@ function Navbar({ children }) {
 
   const handleLogout = async () => {
     await logout();
-    navigate("/login");
+    <Navigate to="/" />
   };
 
   return (
@@ -26,16 +26,19 @@ function Navbar({ children }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 2rem",
+          padding: "0 2.2rem",
           background: theme?.themeInfo?.backgroundSecondary,
           color: theme?.themeInfo?.colorText,
           position: "fixed",
-          top: 0, 
+          top: 0,
           left: 0,
           zIndex: 1000,
         }}
       >
-        {/* LEFT: Logo ve Whisper */}
+
+        
+
+        {/* Left: Logo ve Whisper */}
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <Link
             to="/"
@@ -54,8 +57,9 @@ function Navbar({ children }) {
           </Link>
         </div>
 
-        {/* RIGHT: Settings, Profile, Logout */}
-        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+
+        {/* Right: Settings, Profile, Logout */}
+        <div style={{ display: "flex", alignItems: "center", gap:"5rem" }}>
           <Link to="/settings" style={{ color: theme?.themeInfo?.colorText }}>
             <SettingOutlined style={{ fontSize: "1.5rem" }} />
           </Link>
@@ -69,8 +73,11 @@ function Navbar({ children }) {
             <LogoutOutlined style={{ fontSize: "1.5rem" }} />
           </Link>
         </div>
+
+
+
       </div>
-      <div style={{ background: theme?.themeInfo?.backgroundSecondary}}>
+      <div style={{ background: theme?.themeInfo?.backgroundSecondary }}>
         {children}
       </div>
     </>

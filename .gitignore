@@ -56,3 +56,4 @@ dist-ssr
 *.sw?
 
 .env
+todo.txt
