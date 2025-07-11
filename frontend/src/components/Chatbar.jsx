@@ -12,11 +12,10 @@ import {
 import { ThemeContext } from "../context/ThemeContext";
 
 function Chatbar({ children }) {
-
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
     useChatStore();
 
-  const { onlineUsers, logout } = useAuthStore();
+  const { authUser, onlineUsers, logout } = useAuthStore();
 
   const theme = useContext(ThemeContext);
 
@@ -60,27 +59,29 @@ function Chatbar({ children }) {
         {/* settings profile and logout */}
         <div
           style={{
+            // background: theme.themeInfo.backgroundSecondary,
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-end",
             justifyContent: "center",
-            gap: "5rem",
-            // border:"1px solid silver",
-            padding: "0.5rem",
-            borderRadius: "0.5rem"
+            gap: "2rem",
+            padding: "1rem",
+            borderRadius: "0.5rem",
+            marginBottom:"1rem"
           }}
         >
-          <Link
-            to="/settings"
-            style={{ color: theme?.themeInfo?.colorText }}
-          >
+          <Link to="/settings" style={{ color: theme?.themeInfo?.colorText }}>
             <SettingOutlined style={{ fontSize: "1.5rem" }} />
           </Link>
-          <Link
-            to="/profile"
-            style={{ color: theme?.themeInfo?.colorText }}
-          >
-            <UserOutlined style={{ fontSize: "1.5rem" }} />
+
+          <Link to="/profile" style={{ color: theme?.themeInfo?.colorText }}>
+            <Avatar
+              src={authUser?.profilePic}
+              size={150}
+              style={{ borderRadius: "25%" }}
+              icon={<UserOutlined />}
+            />
           </Link>
+
           <Link
             onClick={handleLogout}
             style={{ color: theme?.themeInfo?.colorText }}
@@ -102,15 +103,10 @@ function Chatbar({ children }) {
                 cursor: "pointer",
                 borderRadius: "0.5em",
                 backgroundColor:
-                  selectedUser?._id === user._id
-                    ? "#e0e0e0"
-                    : "transparent",
+                  selectedUser?._id === user._id ? "#e0e0e0" : "transparent",
                 color: selectedUser?._id === user._id ? "#000" : "#fff",
               }}
             >
-
-
-
               <div
                 style={{
                   display: "flex",
@@ -119,7 +115,11 @@ function Chatbar({ children }) {
                 }}
               >
                 {user.profilePic ? (
-                  <Badge dot={onlineUsers.includes(user._id)} status="success" size="small" >
+                  <Badge
+                    dot={onlineUsers.includes(user._id)}
+                    status="success"
+                    size="small"
+                  >
                     <Avatar src={user.profilePic} />
                   </Badge>
                 ) : (
@@ -133,7 +133,6 @@ function Chatbar({ children }) {
                 )}
                 {user.fullName}
               </div>
-
             </div>
           ))
         )}
@@ -159,7 +158,3 @@ export default Chatbar;
 // <Badge count={1}>
 //       <Avatar shape="square" icon={<UserOutlined />} />
 //     </Badge>
-
-// pp vermek icin
-// <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-

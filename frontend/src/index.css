@@ -15,64 +15,6 @@
   padding: 2rem;
 }
 
-/* scrollbar start */
-* {
-  scrollbar-width: thin;              /* Firefox */
-  scrollbar-color: rgba(136, 136, 136, 0.3) rgba(255, 255, 255, 0.034);  /* Firefox */
-}
-
-/* Chrome, Edge, Safari - TÜM ELEMENTLER İÇİN */
-*::-webkit-scrollbar {
-  width: 10px;
-  background: rgba(255, 255, 255, 0.05);  /* Çok açık transparan beyaz */
-}
-
-*::-webkit-scrollbar-thumb {
-  background: rgba(136, 136, 136, 0.3);  /* Açık gri thumb */
-  border-radius: 8px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: rgba(136, 136, 136, 0.6);  /* Hover'da biraz daha koyu */
-  background-clip: content-box;
-}
-
-*::-webkit-scrollbar-thumb:active {
-  background: rgba(136, 136, 136, 0.8);  /* Active'de daha koyu */
-  background-clip: content-box;
-}
-
-/* Firefox için hover durumu */
-*:hover {
-  scrollbar-color: rgba(136, 136, 136, 0.6) rgba(255, 255, 255, 0.05);
-}
-
-/* Body ve HTML için de aynı ayarlar */
-html, body, #root {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(136, 136, 136, 0.3) rgba(255, 255, 255, 0.05);
-}
-
-html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar {
-  width: 10px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, #root::-webkit-scrollbar-thumb {
-  background: rgba(136, 136, 136, 0.3);
-  border-radius: 8px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover, #root::-webkit-scrollbar-thumb:hover {
-  background: rgba(136, 136, 136, 0.6);
-  background-clip: content-box;
-}
-/* scrollbar end */
-
 .theme-color{
     width: 4em;
     aspect-ratio: 1/1;
@@ -80,6 +22,24 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover, #root:
 }
 
 
+/* scrollbar */
+* {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
 
+*::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+/* 
 
 
