@@ -5,7 +5,6 @@ import cloudinary from "../lib/cloudinary.js"
 
 export const signup = async (req, res) => {
 
-    console.log("Gelen Body:", req.body);
     const { fullName, email, password } = req.body
     try {
 
@@ -108,34 +107,52 @@ export const logout = (req, res) => {
 }
 
 
-export const updateProfilePicture = async (req,res) => {
+export const updateProfile = async (req, res) => {
     try {
-        const {profilePic} = req.body;
-        
-        // we can directly acces to user id bcs updateProfile executes as next
-        // bcs before updateProfile we take the token 
-        const userId = req.user._id
+        const { profilePic, fullName } = req.body;
+        const userId = req.user._id;
 
-        if (!profilePic) {
-            return res.status(400).json({message : "Profile pic is required"})
+        // En az bir alan dolu olmalı
+        if (!profilePic && !fullName) {
+            return res.status(400).json({ message: "At least one field (profilePic or fullName) is required" });
         }
 
-        //uplod picture
-        const uploadResponse = await cloudinary.uploader.upload(profilePic)
+        // Güncellenecek alanları hazırla
+        const updateFields = {};
 
-        // save profile pic to db
+        // Profil fotoğrafı varsa Cloudinary'ye yükle
+        if (profilePic) {
+            const uploadResponse = await cloudinary.uploader.upload(profilePic);
+            updateFields.profilePic = uploadResponse.secure_url;
+        }
+
+        // İsim varsa güncelle
+        if (fullName) {
+            // İsim validasyonu
+            if (fullName.trim().length < 2) {
+                return res.status(400).json({ message: "Full name must be at least 2 characters long" });
+            }
+            updateFields.fullName = fullName.trim();
+        }
+
+        // Kullanıcıyı güncelle
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            {profilePic : uploadResponse.secure_url},
-            {new : true} )
+            updateFields,
+            { new: true }
+        ).select("-password"); // Şifreyi döndürme
 
-        res.status(200).json(updatedUser)
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(updatedUser);
 
     } catch (error) {
-        console.log("error in update profile", error)
-        res.status(500).json({message: "Internal Server Error in Updating Profile"})
+        console.log("Error in updateProfile:", error);
+        res.status(500).json({ message: "Internal Server Error in Updating Profile" });
     }
-}
+};
 
 
 export const checkAuth = (req,res) => {

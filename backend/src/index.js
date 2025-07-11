@@ -17,8 +17,8 @@ const PORT = process.env.PORT;
 const __dirname = path.resolve();
 
 // middlewares
-app.use(express.json({ limit: "5mb" })); // extract data from body (req.body)
-app.use(express.urlencoded({ limit: "5mb", extended: true }));
+app.use(express.json({ limit: "10mb" })); // extract data from body (req.body)
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser()) // to grap the cookies like req.cookies.jwt 
 app.use(cors({
     origin: [

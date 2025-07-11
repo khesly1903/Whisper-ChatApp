@@ -71,19 +71,33 @@ export const useAuthStore = create((set, get) => ({
   },
 
   updateProfile: async (data) => {
-    set({ isUpdatingProfile: true })
-
-    try {
-      const res = await axiosInstance.put("/auth/updateProfile", data)
-      set({ authUser: res.data })
-      toast.success("Profile updates succesfully")
-    } catch (error) {
-      console.log("error in update profile:", error)
-      toast.error(error.response.data.message)
-    } finally {
-      set({ isUpdatingProfile: false })
+  set({ isUpdatingProfile: true });
+  try {
+    const res = await axiosInstance.put("/auth/updateProfile", data);
+    set({ authUser: res.data });
+    
+    // Hangi alanın güncellendiğine göre mesaj göster
+    if (data.profilePic && data.fullName) {
+      toast.success("Profile updated successfully");
+    } else if (data.profilePic) {
+      toast.success("Profile picture updated successfully");
+    } else if (data.fullName) {
+      toast.success("Name updated successfully");
     }
-  },
+    
+  } catch (error) {
+    console.log("Error in updateProfile:", error);
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    } else if (error.response?.status === 413) {
+      toast.error("Image is too large. Please choose a smaller image.");
+    } else {
+      toast.error("Failed to update profile");
+    }
+  } finally {
+    set({ isUpdatingProfile: false });
+  }
+},
 
   connectSocket: () => {
     const { authUser } = get()
