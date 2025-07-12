@@ -48,7 +48,7 @@ function ChatContainer() {
             display: "flex",
             flexDirection: "column",
             borderRadius: "1rem",
-            overflow: "hidden"
+            overflow: "hidden",
         }}>
             <ChatHeader />
 
@@ -60,7 +60,8 @@ function ChatContainer() {
                 padding: "1rem",
                 display: "flex",
                 flexDirection: "column",
-                gap: "0.5rem"
+                gap: "0.5rem",
+                
             }}>
                 {messages.length === 0 ? (
                     <div style={{

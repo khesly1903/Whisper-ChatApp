@@ -1,0 +1,14 @@
+{
+  "backgrounds": {
+    "1": "url(http://www.transparenttextures.com/patterns/black-linen.png)",
+    "2": "url(https://www.transparenttextures.com/patterns/arabesque.png)",
+    "3": "url(https://www.transparenttextures.com/patterns/arches.png)",
+    "4": "url(https://www.transparenttextures.com/patterns/asfalt-dark.png)",
+    "5": "url(https://www.transparenttextures.com/patterns/black-thread.png)",
+    "6": "url(https://www.transparenttextures.com/patterns/bright-squares.png)",
+    "7": "url(https://www.transparenttextures.com/patterns/cartographer.png)",
+    "8": "url(https://www.transparenttextures.com/patterns/cubes.png)",
+    "9": "url(https://www.transparenttextures.com/patterns/diagmonds-light.png)",
+    "10": "url(https://www.transparenttextures.com/patterns/dimension.png)"
+  }
+}

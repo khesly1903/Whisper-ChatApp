@@ -128,8 +128,12 @@ export default function MessageInput() {
       <form onSubmit={handleSendMessage}
         style={{
           padding: '1rem',
-          borderTop: '1px solid #d9d9d9',
-          backgroundColor: theme.themeInfo.backgroundSecondary
+          backgroundColor: theme.themeInfo.backgroundSecondary,
+          borderTop: `3px solid ${theme.themeInfo.backgroundPrimary}`,
+          borderRadius:"1rem 1rem 0rem 0rem",
+          boxShadow: "0px -8px 20px 1px rgba(0,0,0,0.54)"
+
+
         }}>
         <Space.Compact style={{ width: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: "center", gap: "0.5rem" }}>
 

@@ -36,7 +36,9 @@ export default function ChatHeader() {
       width: "100%", 
       height: "4rem",
       padding: "0 1rem",
-      borderBottom: "1px solid #d9d9d9"
+      borderBottom: `3px solid ${theme.themeInfo.backgroundPrimary}`,
+      borderRadius:"0rem 0rem 1rem 1rem",
+      boxShadow: "0px 8px 20px 1px rgba(0,0,0,0.54)"
     }}>
       <Flex justify="space-between" align="center" style={{ height: "100%" }}>
         {/* Profile picture and username */}

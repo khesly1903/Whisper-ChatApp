@@ -24,6 +24,7 @@ import { darkPastelTheme } from "./themes/darkPastelTheme";
 import { sunsetTheme } from "./themes/sunsetTheme";
 
 const THEME_KEY = "chat-theme";
+const BACKGROUND_KEY = "chat-background"; // Background key'i ekle
 
 function getThemeFromStorage() {
   const themeName = localStorage.getItem(THEME_KEY);
@@ -41,11 +42,18 @@ function getThemeFromStorage() {
   return classicalDark; // default
 }
 
+// Background için storage fonksiyonu ekle
+function getBackgroundFromStorage() {
+  const backgroundId = localStorage.getItem(BACKGROUND_KEY);
+  return backgroundId || "1"; // default background ID
+}
+
 function App() {
   const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
   console.log(onlineUsers)
 
   const [currentTheme, setCurrentTheme] = useState(() => getThemeFromStorage());
+  const [currentBackground, setCurrentBackground] = useState(() => getBackgroundFromStorage()); // Background state'i ekle
 
   useEffect(() => {
     checkAuth();
@@ -53,11 +61,19 @@ function App() {
   
   console.log({ authUser });
 
+  // Theme için localStorage
   useEffect(() => {
     if (currentTheme?.themeName) {
       localStorage.setItem(THEME_KEY, currentTheme.themeName);
     }
   }, [currentTheme]);
+
+  // Background için localStorage ekle
+  useEffect(() => {
+    if (currentBackground) {
+      localStorage.setItem(BACKGROUND_KEY, currentBackground);
+    }
+  }, [currentBackground]);
 
   useEffect(() => {
     const themeName = localStorage.getItem(THEME_KEY);
@@ -79,7 +95,8 @@ function App() {
           /> */}
           <Route
             path="/"
-            element={authUser ? <ChatPage /> : <Navigate to="/login" />}
+            element={authUser ? <ChatPage 
+            currentBackground={currentBackground} /> : <Navigate to="/login" />}
           />
           <Route
             path="/signup"
@@ -96,6 +113,8 @@ function App() {
               <SettingsPage
                 currentTheme={currentTheme}
                 setCurrentTheme={setCurrentTheme}
+                currentBackground={currentBackground} // Background prop'ları ekle
+                setCurrentBackground={setCurrentBackground}
               /> : <Navigate to="/"/>
             }
           />

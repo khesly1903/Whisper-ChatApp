@@ -104,7 +104,8 @@ function Chatbar({ children }) {
                 borderRadius: "0.5em",
                 backgroundColor:
                   selectedUser?._id === user._id ? "#e0e0e0" : "transparent",
-                color: selectedUser?._id === user._id ? "#000" : "#fff",
+                // color: selectedUser?._id === user._id ? "#000" : "#fff",
+                color:theme?.themeInfo?.colorText,
               }}
             >
               <div
