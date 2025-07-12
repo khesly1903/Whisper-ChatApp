@@ -5,11 +5,11 @@ import cloudinary from "../lib/cloudinary.js"
 
 export const signup = async (req, res) => {
 
-    const { fullName, email, password } = req.body
+    const { fullName, nickName, email, password } = req.body
     try {
 
         // check everythind is filled
-        if (!fullName || !email || !password) {
+        if (!fullName || !nickName|| !email || !password ) {
             return res.status(400).json({ message: "All fields are requied" })
         }
 
@@ -18,10 +18,20 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: "Password must be at least 6 characters" })
         }
 
+        if (nickName.length < 6) {
+            return res.status(400).json({ message: "Nick name must be at least 6 characters" })
+        }
+
         // check mail exists 
-        const user = await User.findOne({ email })
-        if (user) {
+        const userEmail = await User.findOne({ email })
+        if (userEmail) {
             return res.status(400).json({ message: "Email already exists" })
+        }
+
+        // check nickname exists 
+        const userNickName = await User.findOne({ email })
+        if (userNickName) {
+            return res.status(400).json({ message: "Nickname has already been taken!" })
         }
 
         // hash the password
@@ -31,6 +41,7 @@ export const signup = async (req, res) => {
         // create a user
         const newUser = new User({
             fullName,
+            nickName,
             email,
             password: hashedPassword
         }
@@ -45,6 +56,7 @@ export const signup = async (req, res) => {
             res.status(201).json({
                 _id: newUser._id,
                 fullname: newUser.fullName,
+                nickName: newUser.nickName,
                 email: newUser.email,
                 profilePic: newUser.profilePic
             });
@@ -80,6 +92,7 @@ export const login = async (req, res) => {
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
+            nickName: user.nickName,
             password: user.password,
             profilePic: user.profilePic
         })

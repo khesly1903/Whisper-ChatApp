@@ -2,11 +2,16 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
     {
-
+        nickName: {
+            type: String,
+            required: true,
+            unique: true,
+            minlength: 6,
+            maxlength: 20
+        },
         fullName: {
             type: String,
             required: true,
-
         },
         email: {
             type: String,
@@ -21,7 +26,13 @@ const userSchema = new mongoose.Schema(
         profilePic: {
             type: String,
             default: ""
-        }
+        },
+        contacts: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: "User",
+            default: []
+        },
+        
 
     },
     { timestamps: true }

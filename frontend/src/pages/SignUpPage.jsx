@@ -6,6 +6,7 @@ import {
   UserOutlined,
   MailOutlined,
   LockOutlined,
+  CrownOutlined
 } from "@ant-design/icons";
 import "../styles/signuppage.css";
 import { useAuthStore } from "../store/useAuthStore";
@@ -18,6 +19,7 @@ function SignUpPage() {
   const theme = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     fullName: "",
+    nickName: "",
     email: "",
     password: "",
   });
@@ -30,6 +32,14 @@ function SignUpPage() {
   const validateForm = () => {
     if (!formData.fullName.trim()) {
       toast.error("Full name required");
+      return false;
+    }
+    if (!formData.nickName.trim()) {
+      toast.error("Nick name required");
+      return false;
+    }
+    if (formData.nickName.length < 6) {
+      toast.error("Nick name must be at least 6 characters");
       return false;
     }
     if (!formData.email.trim()) {
@@ -75,6 +85,14 @@ function SignUpPage() {
           value={formData.fullName}
           onChange={(e) =>
             setFormData({ ...formData, fullName: e.target.value })
+          }
+        />
+        <Input
+          placeholder="Nick Name"
+          prefix={<CrownOutlined />}
+          value={formData.nickName}
+          onChange={(e) =>
+            setFormData({ ...formData, nickName: e.target.value })
           }
         />
         <Input

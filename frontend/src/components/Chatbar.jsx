@@ -66,7 +66,7 @@ function Chatbar({ children }) {
             gap: "2rem",
             padding: "1rem",
             borderRadius: "0.5rem",
-            marginBottom:"1rem"
+            marginBottom: "1rem",
           }}
         >
           <Link to="/settings" style={{ color: theme?.themeInfo?.colorText }}>
@@ -74,12 +74,19 @@ function Chatbar({ children }) {
           </Link>
 
           <Link to="/profile" style={{ color: theme?.themeInfo?.colorText }}>
-            <Avatar
-              src={authUser?.profilePic}
-              size={150}
-              style={{ borderRadius: "25%" }}
-              icon={<UserOutlined />}
-            />
+            {authUser?.profilePic ? (
+              <Avatar
+                src={authUser.profilePic}
+                size={150}
+                style={{ borderRadius: "25%" }}
+              />
+            ) : (
+              <Avatar
+                size={150}
+                style={{ borderRadius: "25%" }}
+                icon={<UserOutlined />}
+              />
+            )}
           </Link>
 
           <Link
@@ -103,9 +110,10 @@ function Chatbar({ children }) {
                 cursor: "pointer",
                 borderRadius: "0.5em",
                 backgroundColor:
-                  selectedUser?._id === user._id ? "#e0e0e0" : "transparent",
-                // color: selectedUser?._id === user._id ? "#000" : "#fff",
-                color:theme?.themeInfo?.colorText,
+                  selectedUser?._id === user._id
+                    ? theme.themeInfo.backgroundSecondary
+                    : "transparent",
+                color: theme?.themeInfo?.colorText,
               }}
             >
               <div
@@ -121,7 +129,7 @@ function Chatbar({ children }) {
                     status="success"
                     size="small"
                   >
-                    <Avatar src={user.profilePic} />
+                    <Avatar src={user.profilePic} shape="square" />
                   </Badge>
                 ) : (
                   <Badge dot={onlineUsers.includes(user._id)} status="success">
