@@ -176,3 +176,20 @@ export const checkAuth = (req,res) => {
         res.status(500).json({message: "Internal Server Error"})
     }
 }
+
+export const searchUser = async (req, res) => {
+    const { nickname } = req.query; // req.body yerine req.query
+    try {
+        if (!nickname) {
+            return res.status(400).json({ message: "Nickname is required" });
+        }
+        const user = await User.findOne({ nickName: nickname }).select("-password");
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error in searchUser:", error);
+        res.status(500).json({ message: "Internal Server Error in Searching User" });
+    }
+}

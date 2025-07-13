@@ -1,5 +1,5 @@
 import express from "express"
-import { checkAuth, login, logout, signup, updateProfile } from "../controllers/auth.controller.js"
+import { checkAuth, login, logout, signup, updateProfile, searchUser} from "../controllers/auth.controller.js"
 import { protectRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router()
@@ -8,6 +8,9 @@ const router = express.Router()
 router.post("/signup", signup)
 router.post("/login",  login)
 router.post("/logout", logout)
+
+// search user by nickname
+router.get("/searchUser", protectRoute, searchUser)
 
 // profile update
 // protectRoute: if person autheticates, then can update
