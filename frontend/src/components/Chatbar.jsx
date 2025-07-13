@@ -7,6 +7,7 @@ import { Avatar, Badge } from "antd";
 import {
   SettingOutlined,
   UserOutlined,
+  UserAddOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import { ThemeContext } from "../context/ThemeContext";
@@ -56,7 +57,7 @@ function Chatbar({ children }) {
           flexShrink: 0,
         }}
       >
-        {/* settings profile and logout */}
+        {/* contact add settings profile and logout */}
         <div
           style={{
             // background: theme.themeInfo.backgroundSecondary,
@@ -69,8 +70,8 @@ function Chatbar({ children }) {
             marginBottom: "1rem",
           }}
         >
-          <Link to="/settings" style={{ color: theme?.themeInfo?.colorText }}>
-            <SettingOutlined style={{ fontSize: "1.5rem" }} />
+          <Link to="/" style={{ color: theme?.themeInfo?.colorText }}>
+            <UserAddOutlined style={{ fontSize: "1.5rem" }} />
           </Link>
 
           <Link to="/profile" style={{ color: theme?.themeInfo?.colorText }}>
@@ -89,12 +90,24 @@ function Chatbar({ children }) {
             )}
           </Link>
 
-          <Link
-            onClick={handleLogout}
-            style={{ color: theme?.themeInfo?.colorText }}
+          <div
+            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "9rem", }}
           >
-            <LogoutOutlined style={{ fontSize: "1.5rem" }} />
-          </Link>
+
+            <Link
+              onClick={handleLogout}
+              style={{ color: theme?.themeInfo?.colorText }}
+            >
+              <LogoutOutlined style={{ fontSize: "1.5rem" }} />
+            </Link>
+
+            
+            <Link to="/settings" style={{ color: theme?.themeInfo?.colorText }}>
+              <SettingOutlined style={{ fontSize: "1.5rem" }} />
+            </Link>
+
+            
+          </div>
         </div>
 
         {isUsersLoading ? (

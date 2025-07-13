@@ -31,7 +31,6 @@ function ProfilePage() {
     try {
       await new Promise((resolve) => {
         getBase64(file, async (base64image) => {
-          // Sadece profil fotoğrafını güncelle
           await updateProfile({ profilePic: base64image });
           resolve();
         });
@@ -63,7 +62,7 @@ function ProfilePage() {
               style={{ borderRadius: "2rem" }}
             />
           ) : (
-            <Avatar shape="square" size={"16rem"} icon={<UserOutlined />} />
+            <Avatar shape="square" size={250} icon={<UserOutlined />} />
           )}
 
           <Upload
@@ -83,6 +82,9 @@ function ProfilePage() {
             level={3}
           >
             {fullName}
+          </Title>
+          <Title level={5} style={{marginTop: "-1rem"}}>
+            @{authUser?.nickName}
           </Title>
         </div>
       </div>

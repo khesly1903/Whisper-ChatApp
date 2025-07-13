@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
         }
 
         // check nickname exists 
-        const userNickName = await User.findOne({ email })
+        const userNickName = await User.findOne({ nickName })
         if (userNickName) {
             return res.status(400).json({ message: "Nickname has already been taken!" })
         }
