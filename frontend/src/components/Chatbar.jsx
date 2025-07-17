@@ -24,6 +24,7 @@ function Chatbar({ children }) {
     searchUser,
     searchedUser,
     isSearchingUser,
+    clearSearchedUser,
   } = useAuthStore();
 
   const [addContactVisible, setAddContactVisible] = useState(false);
@@ -92,7 +93,14 @@ function Chatbar({ children }) {
           <UserAddOutlined
             style={{ fontSize: "1.5rem", color: theme?.themeInfo?.colorText }}
             onClick={() => {
-              setAddContactVisible(!addContactVisible);
+              const newVisibility = !addContactVisible;
+              setAddContactVisible(newVisibility);
+
+              // Eğer contact ekleme paneli kapanıyorsa, arama sonuçlarını temizle
+              if (!newVisibility) {
+                clearSearchedUser(); // veya clearSearchedUser() varsa onu kullan
+                setSearchTerm("");
+              }
             }}
           />
           {/* Profile */}
@@ -155,8 +163,18 @@ function Chatbar({ children }) {
                   value={searchTerm}
                   disabled={isSearchingUser}
                   suffix={isSearchingUser ? <LoadingOutlined spin /> : null}
-                  onChange={(e) => setSearchTerm(e.target.value)}
                   onPressEnter={() => handleSearch()}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    setSearchTerm(newValue);
+                    if (
+                      newValue === "" ||
+                      newValue === null ||
+                      newValue === undefined
+                    ) {
+                      clearSearchedUser(); 
+                    }
+                  }}
                   style={{
                     width: "100%",
                     padding: "0.5rem",
@@ -164,7 +182,14 @@ function Chatbar({ children }) {
                   }}
                 />
                 {searchedUser && (
-                  <div className="center-flex" style={{flexDirection: "column", gap: "1rem", marginTop: "1rem"}}>
+                  <div
+                    className="center-flex"
+                    style={{
+                      flexDirection: "column",
+                      gap: "1rem",
+                      marginTop: "1rem",
+                    }}
+                  >
                     <div>
                       {searchedUser?.profilePic ? (
                         <Avatar
@@ -181,7 +206,7 @@ function Chatbar({ children }) {
                       )}
                     </div>
                     <div>{searchedUser.fullName}</div>
-                    <Button>Add User</Button> 
+                    <Button>Add User</Button>
                     {/* TODO: handle adding contact */}
                   </div>
                 )}

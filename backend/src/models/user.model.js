@@ -27,13 +27,50 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: ""
         },
-        contacts: {
-            type: [mongoose.Schema.Types.ObjectId],
-            ref: "User",
-            default: []
-        },
-        
-
+        contacts: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+            lastMessage: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Message",
+                default: null
+            },
+            lastMessageTime: {
+                type: Date,
+                default: Date.now
+            },
+            addedAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        contactRequests: {
+            sent:[{
+                user:{
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref:"User",
+                    required:true
+                },
+                sentAt:{
+                    type:Date,
+                    default:Date.now
+                }
+            }],
+            received:[{
+                user:{
+                    type: mongoose.Schema.Types.ObjectId,
+                    red:"User",
+                    requied:true
+                },
+                received:{
+                    type:Date,
+                    default:Date.now
+                }
+            }]
+        }
     },
     { timestamps: true }
 );
