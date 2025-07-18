@@ -62,10 +62,10 @@ const userSchema = new mongoose.Schema(
             received:[{
                 user:{
                     type: mongoose.Schema.Types.ObjectId,
-                    red:"User",
-                    requied:true
+                    ref:"User",
+                    required:true
                 },
-                received:{
+                receivedAt:{
                     type:Date,
                     default:Date.now
                 }

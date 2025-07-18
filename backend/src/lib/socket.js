@@ -33,6 +33,13 @@ io.on("connection", (socket) => {
         delete userSocketMap[userID]
         io.emit("getOnlineUsers", Object.keys(userSocketMap))
     })
+
+    socket.on("contactRequest", (data) => {
+        const receiverSocketID = getReceiverSocketId(data.receiverID)
+        if(receiverSocketID) { 
+            io.to(receiverSocketID).emit("newContactRequest", data)
+        }
+    })
 })
 
 export {io, app, server}

@@ -21,7 +21,7 @@ export const sendContactRequest = async (req, res) => {
     }
 
     // check already contact
-    const isAlreadyContact = sender.contact.some(
+    const isAlreadyContact = sender.contacts.some(
       // ?? maybe ID comperison
       (contact) => contact.user.toString() === receiverID
     );
@@ -38,6 +38,7 @@ export const sendContactRequest = async (req, res) => {
     }
 
     // sent contact request
+    // sender's sent
     await User.findByIdAndUpdate(senderID, {
       $push: {
         "contactRequests.sent": {
@@ -46,6 +47,15 @@ export const sendContactRequest = async (req, res) => {
         },
       },
     });
+    // receiver's received
+    await User.findByIdAndUpdate(receiverID,{
+      $push: {
+        "contactRequests.received" : {
+          user: senderID,
+          receivedAt: new Date(),
+        }
+      }
+    })
     res.status(200).json({ message: "Contact requst sent succesfully" });
   } catch (error) {
     console.log("Error in sendContactRequest:", error);
@@ -100,16 +110,16 @@ export const rejectContactRequest = async (req, res) => {
     const { senderID } = req.body;
 
     // receiver reject
-    await User.findByIdAndDelete(userID, {
+    await User.findByIdAndUpdate(userID, {
       $pull: {
-        "contactRequest.received": { user: senderID },
+        "contactRequests.received": { user: senderID },
       },
     });
 
     // senders request delete
     await User.findByIdAndUpdate(senderID, {
       $pull: {
-        "contactRequests.send": { user: userID },
+        "contactRequests.sent": { user: userID },
       },
     });
 
@@ -126,7 +136,7 @@ export const getContactRequests = async (req, res) => {
     const userID = req.user._id;
     const user = await User.findById(userID)
       .populate("contactRequests.received.user", "nickName fullName profilePic")
-      .populate("contactRequests.received.user", "nicName fullname profilePic");
+      .populate("contactRequests.sent.user", "nicName fullname profilePic");
 
       res.status(200).json({
         received: user.contactRequests.received,
@@ -137,3 +147,18 @@ export const getContactRequests = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// get all contacts
+export const getContacts = async (req, res) => {
+  try {
+    const userID = req.user._id
+    const user = await User.findById(userID)
+    .populate("contacts.user", "nickName fullName profilePic")
+    res.status(200).json({
+      contacts : user.contacts
+    })
+  } catch (error) {
+    console.log("Error in getContacts:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}

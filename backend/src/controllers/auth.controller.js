@@ -178,12 +178,12 @@ export const checkAuth = (req,res) => {
 }
 
 export const searchUser = async (req, res) => {
-    const { nickname } = req.query; // req.body yerine req.query
+    const { nickName } = req.query; // req.body yerine req.query
     try {
-        if (!nickname) {
+        if (!nickName) {
             return res.status(400).json({ message: "Nickname is required" });
         }
-        const user = await User.findOne({ nickName: nickname }).select("-password");
+        const user = await User.findOne({ nickName: nickName }).select("-password -contacts -contactRequests");
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }

@@ -1,6 +1,7 @@
 import express from "express"
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
+import contactsRoutes from "./routes/contacts.route.js"
 import dotenv from "dotenv"
 import {connectDB} from "./lib/db.js"
 import cookieParser from "cookie-parser"
@@ -36,6 +37,7 @@ app.use(cors({
 //routes
 app.use("/api/auth", authRoutes)
 app.use("/api/messages", messageRoutes)
+app.use("/api/contacts", contactsRoutes)
 
 
 if (process.env.NODE_ENV === "production") {

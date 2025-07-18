@@ -3,22 +3,23 @@ import { checkAuth, login, logout, signup, updateProfile, searchUser} from "../c
 import { protectRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router()
+// protectRoute: if person autheticates, then can update
+// auth.middleware
 
 // authentication routes
 router.post("/signup", signup)
 router.post("/login",  login)
 router.post("/logout", logout)
 
-// search user by nickname
-router.get("/searchUser", protectRoute, searchUser)
-
 // profile update
-// protectRoute: if person autheticates, then can update
-// auth.middleware
 router.put("/updateProfile", protectRoute, updateProfile)
 
 // eg, if the user refresh the page, need to know that user auth or not
 // basic control
 router.get("/check", protectRoute, checkAuth)
+
+// search user by nickname
+router.get("/searchUser", protectRoute, searchUser)
+
 
 export default router
