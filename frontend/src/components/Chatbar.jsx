@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
+import { useContactStore } from "../store/useContactStore";
 import { Link, Navigate } from "react-router-dom";
 import ChatbarSkeleton from "./skeletons/ChatbarSkeleton";
 import { Avatar, Badge, Button, Input } from "antd";
@@ -17,6 +18,7 @@ function Chatbar({ children }) {
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
     useChatStore();
 
+
   const {
     authUser,
     onlineUsers,
@@ -26,6 +28,8 @@ function Chatbar({ children }) {
     isSearchingUser,
     clearSearchedUser,
   } = useAuthStore();
+
+  const {contacts,getContacts, isContactsLoading} = useContactStore()
 
   const [addContactVisible, setAddContactVisible] = useState(false);
 
@@ -43,6 +47,12 @@ function Chatbar({ children }) {
   useEffect(() => {
     getUsers();
   }, [getUsers]);
+
+  useEffect(() => {
+    getContacts();
+  }, [getContacts]);
+
+  
 
   //logout
   const handleLogout = async () => {
@@ -142,7 +152,7 @@ function Chatbar({ children }) {
           </div>
         </div>
 
-        {isUsersLoading ? (
+        {isContactsLoading ? (
           <ChatbarSkeleton />
         ) : (
           <>
@@ -213,8 +223,57 @@ function Chatbar({ children }) {
               </div>
             )}
 
-            {/* Users  */}
-            {users.map((user) => (
+
+            {contacts.map((contact) => (
+              <div
+                key={contact.user._id}
+                onClick={() => setSelectedUser(contact.user)}
+                style={{
+                  height: "4rem",
+                  padding: "0.5em",
+                  cursor: "pointer",
+                  borderRadius: "0.5em",
+                  backgroundColor:
+                    selectedUser?._id === contact.user._id
+                      ? theme.themeInfo.backgroundSecondary
+                      : "transparent",
+                  color: theme?.themeInfo?.colorText,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  {contact.user.profilePic ? (
+                    <Badge
+                      dot={onlineUsers.includes(contact.user._id)}
+                      status="success"
+                      size="small"
+                    >
+                      <Avatar src={contact.user.profilePic} shape="square" />
+                    </Badge>
+                  ) : (
+                    <Badge
+                      dot={onlineUsers.includes(contact.user._id)}
+                      status="success"
+                    >
+                      <Avatar
+                        shape="square"
+                        size={"16rem"}
+                        icon={<UserOutlined />}
+                      />
+                    </Badge>
+                  )}
+                  {contact.user.fullName}
+                </div>
+              </div>
+            ))}
+            
+            {/* Gets All Users  */}
+            {/* {users.map((user) => (
               <div
                 key={user._id}
                 onClick={() => setSelectedUser(user)}
@@ -261,6 +320,7 @@ function Chatbar({ children }) {
                 </div>
               </div>
             ))}
+             */}
           </>
         )}
       </div>

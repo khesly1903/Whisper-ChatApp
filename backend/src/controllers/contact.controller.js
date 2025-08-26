@@ -153,10 +153,10 @@ export const getContacts = async (req, res) => {
   try {
     const userID = req.user._id
     const user = await User.findById(userID)
-    .populate("contacts.user", "nickName fullName profilePic")
-    res.status(200).json({
-      contacts : user.contacts
-    })
+      .select("contacts") 
+      .populate("contacts.user", "nickName fullName profilePic");
+
+    res.status(200).json(user.contacts); 
   } catch (error) {
     console.log("Error in getContacts:", error);
     res.status(500).json({ message: "Internal Server Error" });
