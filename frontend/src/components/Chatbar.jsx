@@ -4,7 +4,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import { useContactStore } from "../store/useContactStore";
 import { Link, Navigate } from "react-router-dom";
 import ChatbarSkeleton from "./skeletons/ChatbarSkeleton";
-import { Avatar, Badge, Button, Input } from "antd";
+import { Avatar, Badge, Button, Input, Collapse } from "antd";
 import {
   SettingOutlined,
   UserOutlined,
@@ -15,9 +15,7 @@ import {
 import { ThemeContext } from "../context/ThemeContext";
 
 function Chatbar({ children }) {
-  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
-    useChatStore();
-
+  const { selectedUser, setSelectedUser } = useChatStore();
 
   const {
     authUser,
@@ -29,7 +27,15 @@ function Chatbar({ children }) {
     clearSearchedUser,
   } = useAuthStore();
 
-  const {contacts,getContacts, isContactsLoading} = useContactStore()
+  const {
+    contacts,
+    getContacts,
+    isContactsLoading,
+    addContact,
+    sendedRequests,
+    receivedRequests,
+    getRequests,
+  } = useContactStore();
 
   const [addContactVisible, setAddContactVisible] = useState(false);
 
@@ -43,16 +49,18 @@ function Chatbar({ children }) {
     }
   };
 
-  //get contacts
-  useEffect(() => {
-    getUsers();
-  }, [getUsers]);
+  // //get contacts
+  // useEffect(() => {
+  //   getUsers();
+  // }, [getUsers]);
 
   useEffect(() => {
     getContacts();
   }, [getContacts]);
 
-  
+  useEffect(() => {
+    getRequests();
+  }, [getRequests]);
 
   //logout
   const handleLogout = async () => {
@@ -71,6 +79,10 @@ function Chatbar({ children }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [setSelectedUser]);
 
+  const handleAddContact = async () => {
+    const receiverID = searchedUser._id;
+    addContact(receiverID);
+  };
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       {/* Sidebar */}
@@ -108,7 +120,7 @@ function Chatbar({ children }) {
 
               // Eğer contact ekleme paneli kapanıyorsa, arama sonuçlarını temizle
               if (!newVisibility) {
-                clearSearchedUser(); // veya clearSearchedUser() varsa onu kullan
+                clearSearchedUser();
                 setSearchTerm("");
               }
             }}
@@ -182,7 +194,7 @@ function Chatbar({ children }) {
                       newValue === null ||
                       newValue === undefined
                     ) {
-                      clearSearchedUser(); 
+                      clearSearchedUser();
                     }
                   }}
                   style={{
@@ -216,13 +228,157 @@ function Chatbar({ children }) {
                       )}
                     </div>
                     <div>{searchedUser.fullName}</div>
-                    <Button>Add User</Button>
+                    <Button onClick={() => handleAddContact()}>Add User</Button>
                     {/* TODO: handle adding contact */}
                   </div>
                 )}
+                
+                <div style={{ margin: "1rem 0" }}>
+                  <Collapse>
+                    <Collapse.Panel header="Received Request" key="1">
+                      <div style={{ margin: "1rem 0" }}>
+                        <h2 style={{ textAlign: "center" }}>
+                          Received Requests
+                        </h2>
+                        {receivedRequests.length === 0 && (
+                          <p>No received requests</p>
+                        )}
+
+                        {receivedRequests.map((req) => (
+                          <div
+                            key={req._id}
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr 2fr",
+                              gridTemplateRows: "repeat(3,1fr)",
+                              gap: "0.2rem",
+                              padding: "0.5rem",
+                              border: "1px solid rgba(217, 222, 226, 0.409)",
+                              borderRadius: "1rem",
+                              margin: "0.5rem 0",
+                              // placeContent:"center",
+                            }}
+                          >
+                            {req.user?.profilePic ? (
+                              <Avatar
+                                src={req.user.profilePic}
+                                size={50}
+                                style={{
+                                  borderRadius: "25%",
+                                  gridArea: "1 / 1 / 3 / 2",
+                                  justifySelf: "center",
+                                  alignSelf: "center",
+                                }}
+                              />
+                            ) : (
+                              <Avatar
+                                size={50}
+                                style={{
+                                  borderRadius: "25%",
+                                  gridArea: "1 / 1 / 3 / 2",
+                                  justifySelf: "center",
+                                  alignSelf: "center",
+                                }}
+                                icon={<UserOutlined />}
+                              />
+                            )}
+                            <span
+                              style={{
+                                gridArea: "1 / 2 / 2 / 3",
+                                alignSelf: "center",
+                                fontSize:"1.3rem"
+                              }}
+                            >
+                              {req.user.fullName}
+                            </span>
+                            <span
+                              style={{
+                                gridArea: "2 / 2 / 3 / 3",
+                                alignSelf: "center",
+                              }}
+                            >
+                              @{req.user.nickName}
+                            </span>
+                            <div style={{ gridArea: "3 / 1 / 4 / 3" }}>
+                              <Button style={{ width: "100%" }}>Cancel</Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </Collapse.Panel>
+
+                    <Collapse.Panel header="Sended Requests" key="2">
+
+                        {sendedRequests.length === 0 && <p>No sent requests</p>}
+
+                        {sendedRequests.map((req) => (
+                          <div
+                            key={req._id}
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr 2fr",
+                              gridTemplateRows: "repeat(3,1fr)",
+                              gap: "0.2rem",
+                              padding: "0.5rem",
+                              border: "1px solid rgba(217, 222, 226, 0.409)",
+                              borderRadius: "1rem",
+                              margin: "0.5rem 0",
+                              // placeContent:"center",
+                            }}
+                          >
+                            {req.user?.profilePic ? (
+                              <Avatar
+                                src={req.user.profilePic}
+                                size={50}
+                                style={{
+                                  borderRadius: "25%",
+                                  gridArea: "1 / 1 / 3 / 2",
+                                  justifySelf: "center",
+                                  alignSelf: "center",
+                                }}
+                              />
+                            ) : (
+                              <Avatar
+                                size={50}
+                                style={{
+                                  borderRadius: "25%",
+                                  gridArea: "1 / 1 / 3 / 2",
+                                  justifySelf: "center",
+                                  alignSelf: "center",
+                                }}
+                                icon={<UserOutlined />}
+                              />
+                            )}
+                            <span
+                              style={{
+                                gridArea: "1 / 2 / 2 / 3",
+                                alignSelf: "center",
+                                fontSize:"1.3rem"
+                              }}
+                            >
+                              {req.user.fullName}
+                            </span>
+                            <span
+                              style={{
+                                gridArea: "2 / 2 / 3 / 3",
+                                alignSelf: "center",
+                              }}
+                            >
+                              @{req.user.nickName}
+                            </span>
+                            {/* <span>{req.sentAt}</span> */}
+                            <div style={{ gridArea: "3 / 1 / 4 / 3" }}>
+                              <Button style={{ width: "50%" }}>Accept</Button>
+                              <Button style={{ width: "50%" }}>Reject</Button>
+                            </div>
+                          </div>
+                        ))}
+
+                    </Collapse.Panel>
+                  </Collapse>
+                </div>
               </div>
             )}
-
 
             {contacts.map((contact) => (
               <div
@@ -271,56 +427,6 @@ function Chatbar({ children }) {
                 </div>
               </div>
             ))}
-            
-            {/* Gets All Users  */}
-            {/* {users.map((user) => (
-              <div
-                key={user._id}
-                onClick={() => setSelectedUser(user)}
-                style={{
-                  height: "4rem",
-                  padding: "0.5em",
-                  cursor: "pointer",
-                  borderRadius: "0.5em",
-                  backgroundColor:
-                    selectedUser?._id === user._id
-                      ? theme.themeInfo.backgroundSecondary
-                      : "transparent",
-                  color: theme?.themeInfo?.colorText,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  {user.profilePic ? (
-                    <Badge
-                      dot={onlineUsers.includes(user._id)}
-                      status="success"
-                      size="small"
-                    >
-                      <Avatar src={user.profilePic} shape="square" />
-                    </Badge>
-                  ) : (
-                    <Badge
-                      dot={onlineUsers.includes(user._id)}
-                      status="success"
-                    >
-                      <Avatar
-                        shape="square"
-                        size={"16rem"}
-                        icon={<UserOutlined />}
-                      />
-                    </Badge>
-                  )}
-                  {user.fullName}
-                </div>
-              </div>
-            ))}
-             */}
           </>
         )}
       </div>

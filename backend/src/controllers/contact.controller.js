@@ -6,7 +6,8 @@ export const sendContactRequest = async (req, res) => {
     const senderID = req.user._id;
     const sender = await User.findById(senderID);
 
-    const { receiverID } = req.body;
+    // const { receiverID } = req.body;
+    const { receiverID } = req.query;
     const receiver = await User.findById(receiverID);
 
     if (senderID.toString() === receiverID) {
@@ -136,7 +137,7 @@ export const getContactRequests = async (req, res) => {
     const userID = req.user._id;
     const user = await User.findById(userID)
       .populate("contactRequests.received.user", "nickName fullName profilePic")
-      .populate("contactRequests.sent.user", "nicName fullname profilePic");
+      .populate("contactRequests.sent.user", "nickName fullName profilePic");
 
       res.status(200).json({
         received: user.contactRequests.received,

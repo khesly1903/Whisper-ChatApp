@@ -47,10 +47,10 @@ export const useAuthStore = create((set, get) => ({
   },
 
   searchUser: async (nickname) => {
-    set({ isSearchingUser: true });
+    set({ isSearchingUser: true});
     try {
       const res = await axiosInstance.get(
-        `/auth/searchUser?nickname=${nickname}`
+        `/auth/searchUser?nickName=${nickname}`
       );
       set({ searchedUser: res.data });
       toast.success("Kullanıcı bulundu");
@@ -61,6 +61,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isSearchingUser: false });
     }
   },
+
   clearSearchedUser: () => {
     set({ searchedUser: null });
   },

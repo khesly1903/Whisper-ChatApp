@@ -178,7 +178,7 @@ export const checkAuth = (req,res) => {
 }
 
 export const searchUser = async (req, res) => {
-    const { nickName } = req.query; // req.body yerine req.query
+    const { nickName } = req.query; 
     try {
         if (!nickName) {
             return res.status(400).json({ message: "Nickname is required" });
