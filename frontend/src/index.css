@@ -22,6 +22,8 @@
 }
 
 
+/* index.css */
+
 /* scrollbar */
 * {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -41,5 +43,7 @@ body::-webkit-scrollbar {
   display: none;
 }
 /* 
+
+
 
 

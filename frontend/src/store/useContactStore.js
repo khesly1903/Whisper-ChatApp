@@ -1,9 +1,8 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
-import { useAuthStore } from "./useAuthStore";
 
-export const useContactStore = create((set, get) => ({
+export const useContactStore = create((set) => ({
   contacts: [],
   isContactsLoading: false,
   isAddingContact: false,
@@ -41,16 +40,49 @@ export const useContactStore = create((set, get) => ({
     }
   },
 
+  cancelRequest: async (receiverID) => {
+    try {
+      const res = await axiosInstance.post(
+        `/contacts/cancelContactRequest?receiverID=${receiverID}`
+      );
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
   getRequests: async () => {
     set({ isGettingRequests: true });
     try {
-        const res = await axiosInstance.get("/contacts/getContactRequests")
-        set({receivedRequests:res.data.received})
-        set({sendedRequests:res.data.sent})
+      const res = await axiosInstance.get("/contacts/getContactRequests");
+      set({ receivedRequests: res.data.received });
+      set({ sendedRequests: res.data.sent });
     } catch (error) {
-      toast.error("Error:",error);
+      toast.error("Error:", error);
     } finally {
       set({ isGettingRequests: false });
+    }
+  },
+
+  acceptRequest: async (senderID) => {
+    try {
+      const res = await axiosInstance.post(
+        `/contacts/acceptContactRequest?senderID=${senderID}`
+      );
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error("Error:", error);
+    }
+  },
+
+  rejectRequest: async (senderID) => {
+    try {
+      const res = await axiosInstance.post(
+        `contacts/rejectContactRequest?senderID=${senderID}`
+      );
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error("Error:", error);
     }
   },
 }));

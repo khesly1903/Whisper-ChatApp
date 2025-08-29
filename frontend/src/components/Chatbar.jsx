@@ -32,9 +32,12 @@ function Chatbar({ children }) {
     getContacts,
     isContactsLoading,
     addContact,
+    cancelRequest,
     sendedRequests,
     receivedRequests,
     getRequests,
+    acceptRequest,
+    rejectRequest,
   } = useContactStore();
 
   const [addContactVisible, setAddContactVisible] = useState(false);
@@ -61,6 +64,21 @@ function Chatbar({ children }) {
   useEffect(() => {
     getRequests();
   }, [getRequests]);
+
+  const handleAcceptRequest = async (senderID) => {
+    await acceptRequest(senderID);
+    getRequests();
+  };
+
+  const handleRejectRequest = async (senderID) => {
+    await rejectRequest(senderID);
+    getRequests();
+  };
+
+  const handleCancelRequest = async (receiverID) => {
+    await cancelRequest(receiverID);
+    getRequests();
+  };
 
   //logout
   const handleLogout = async () => {
@@ -172,7 +190,7 @@ function Chatbar({ children }) {
             {addContactVisible && (
               <div
                 style={{
-                  margin: "1rem 0rem 1rem 0rem",
+                  margin: "1rem 0rem 1rem 0rem", 
                   padding: "1rem",
                   backgroundColor: theme?.themeInfo?.backgroundSecondary,
                   color: theme?.themeInfo?.colorText,
@@ -189,6 +207,7 @@ function Chatbar({ children }) {
                   onChange={(e) => {
                     const newValue = e.target.value;
                     setSearchTerm(newValue);
+                    clearSearchedUser()
                     if (
                       newValue === "" ||
                       newValue === null ||
@@ -229,87 +248,16 @@ function Chatbar({ children }) {
                     </div>
                     <div>{searchedUser.fullName}</div>
                     <Button onClick={() => handleAddContact()}>Add User</Button>
-                    {/* TODO: handle adding contact */}
                   </div>
                 )}
-                
+
                 <div style={{ margin: "1rem 0" }}>
                   <Collapse>
-                    <Collapse.Panel header="Received Request" key="1">
+                    <Collapse.Panel header="Sended Request" key="1">
                       <div style={{ margin: "1rem 0" }}>
-                        <h2 style={{ textAlign: "center" }}>
-                          Received Requests
-                        </h2>
-                        {receivedRequests.length === 0 && (
-                          <p>No received requests</p>
+                        {sendedRequests.length === 0 && (
+                          <p>No sended requests</p>
                         )}
-
-                        {receivedRequests.map((req) => (
-                          <div
-                            key={req._id}
-                            style={{
-                              display: "grid",
-                              gridTemplateColumns: "1fr 2fr",
-                              gridTemplateRows: "repeat(3,1fr)",
-                              gap: "0.2rem",
-                              padding: "0.5rem",
-                              border: "1px solid rgba(217, 222, 226, 0.409)",
-                              borderRadius: "1rem",
-                              margin: "0.5rem 0",
-                              // placeContent:"center",
-                            }}
-                          >
-                            {req.user?.profilePic ? (
-                              <Avatar
-                                src={req.user.profilePic}
-                                size={50}
-                                style={{
-                                  borderRadius: "25%",
-                                  gridArea: "1 / 1 / 3 / 2",
-                                  justifySelf: "center",
-                                  alignSelf: "center",
-                                }}
-                              />
-                            ) : (
-                              <Avatar
-                                size={50}
-                                style={{
-                                  borderRadius: "25%",
-                                  gridArea: "1 / 1 / 3 / 2",
-                                  justifySelf: "center",
-                                  alignSelf: "center",
-                                }}
-                                icon={<UserOutlined />}
-                              />
-                            )}
-                            <span
-                              style={{
-                                gridArea: "1 / 2 / 2 / 3",
-                                alignSelf: "center",
-                                fontSize:"1.3rem"
-                              }}
-                            >
-                              {req.user.fullName}
-                            </span>
-                            <span
-                              style={{
-                                gridArea: "2 / 2 / 3 / 3",
-                                alignSelf: "center",
-                              }}
-                            >
-                              @{req.user.nickName}
-                            </span>
-                            <div style={{ gridArea: "3 / 1 / 4 / 3" }}>
-                              <Button style={{ width: "100%" }}>Cancel</Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Collapse.Panel>
-
-                    <Collapse.Panel header="Sended Requests" key="2">
-
-                        {sendedRequests.length === 0 && <p>No sent requests</p>}
 
                         {sendedRequests.map((req) => (
                           <div
@@ -321,6 +269,7 @@ function Chatbar({ children }) {
                               gap: "0.2rem",
                               padding: "0.5rem",
                               border: "1px solid rgba(217, 222, 226, 0.409)",
+                              background: theme.themeInfo.backgroundSecondary,
                               borderRadius: "1rem",
                               margin: "0.5rem 0",
                               // placeContent:"center",
@@ -353,7 +302,7 @@ function Chatbar({ children }) {
                               style={{
                                 gridArea: "1 / 2 / 2 / 3",
                                 alignSelf: "center",
-                                fontSize:"1.3rem"
+                                fontSize: "1.3rem",
                               }}
                             >
                               {req.user.fullName}
@@ -366,14 +315,109 @@ function Chatbar({ children }) {
                             >
                               @{req.user.nickName}
                             </span>
-                            {/* <span>{req.sentAt}</span> */}
                             <div style={{ gridArea: "3 / 1 / 4 / 3" }}>
-                              <Button style={{ width: "50%" }}>Accept</Button>
-                              <Button style={{ width: "50%" }}>Reject</Button>
+                              <Button
+                                type="danger"
+                                style={{ width: "100%" }}
+                                onClick={() =>
+                                  handleCancelRequest(req.user._id)
+                                }
+                              >
+                                Cancel
+                              </Button>
                             </div>
                           </div>
                         ))}
+                      </div>
+                    </Collapse.Panel>
 
+                    <Collapse.Panel header="Received Requests" key="2">
+                      {receivedRequests.length === 0 && <p>No received request</p>}
+
+                      {receivedRequests.map((req) => (
+                        <div
+                          key={req._id}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 2fr",
+                            gridTemplateRows: "repeat(3,1fr)",
+                            gap: "0.2rem",
+                            padding: "0.5rem",
+                            border: "1px solid rgba(217, 222, 226, 0.409)",
+                            background: theme.themeInfo.backgroundSecondary,
+                            borderRadius: "1rem",
+                            margin: "0.5rem 0",
+                            // placeContent:"center",
+                          }}
+                        >
+                          {req.user?.profilePic ? (
+                            <Avatar
+                              src={req.user.profilePic}
+                              size={50}
+                              style={{
+                                borderRadius: "25%",
+                                gridArea: "1 / 1 / 3 / 2",
+                                justifySelf: "center",
+                                alignSelf: "center",
+                              }}
+                            />
+                          ) : (
+                            <Avatar
+                              size={50}
+                              style={{
+                                borderRadius: "25%",
+                                gridArea: "1 / 1 / 3 / 2",
+                                justifySelf: "center",
+                                alignSelf: "center",
+                              }}
+                              icon={<UserOutlined />}
+                            />
+                          )}
+                          <span
+                            style={{
+                              gridArea: "1 / 2 / 2 / 3",
+                              alignSelf: "center",
+                              fontSize: "1.3rem",
+                            }}
+                          >
+                            {req.user.fullName}
+                          </span>
+                          <span
+                            style={{
+                              gridArea: "2 / 2 / 3 / 3",
+                              alignSelf: "center",
+                            }}
+                          >
+                            @{req.user.nickName}
+                          </span>
+                          {/* <span>{req.sentAt}</span> */}
+                          <div
+                            style={{
+                              gridArea: "3 / 1 / 4 / 3",
+                              display: "flex",
+                              justifyContent: "center",
+                              gap: "1rem",
+                            }}
+                          >
+                            <Button
+                              style={{ width: "45%" }}
+                              onClick={() => {
+                                handleAcceptRequest(req.user._id);
+                              }}
+                            >
+                              Accept
+                            </Button>
+                            <Button
+                              style={{ width: "45%" }}
+                              onClick={() => {
+                                handleRejectRequest(req.user._id);
+                              }}
+                            >
+                              Reject
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
                     </Collapse.Panel>
                   </Collapse>
                 </div>

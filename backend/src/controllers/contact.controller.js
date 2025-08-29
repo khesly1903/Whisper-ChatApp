@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import { getMessages } from "./message.controller.js";
 
 // sent contact request
 export const sendContactRequest = async (req, res) => {
@@ -49,17 +50,43 @@ export const sendContactRequest = async (req, res) => {
       },
     });
     // receiver's received
-    await User.findByIdAndUpdate(receiverID,{
+    await User.findByIdAndUpdate(receiverID, {
       $push: {
-        "contactRequests.received" : {
+        "contactRequests.received": {
           user: senderID,
           receivedAt: new Date(),
-        }
-      }
-    })
+        },
+      },
+    });
     res.status(200).json({ message: "Contact requst sent succesfully" });
   } catch (error) {
     console.log("Error in sendContactRequest:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const cancelContactRequest = async (req, res) => {
+  const userID = req.user._id;
+  const { receiverID } = req.query;
+
+  try {
+    // remove from sender's sended contact request
+    await User.findByIdAndUpdate(userID, {
+      $pull: {
+        "contactRequests.sent": { user: receiverID },
+      },
+    });
+
+    // remove from receiver's received contact request
+    await User.findByIdAndUpdate(receiverID, {
+      $pull: {
+        "contactRequests.received": { user: userID },
+      },
+    });
+
+    res.status(200).json({ message: "Contact request cancelled" });
+  } catch (error) {
+    console.log("Error in cancelContactRequest:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -68,7 +95,7 @@ export const sendContactRequest = async (req, res) => {
 export const acceptContactRequest = async (req, res) => {
   try {
     const userID = req.user._id;
-    const { senderID } = req.body;
+    const { senderID } = req.query;
 
     // add both useres each others contacts
     // receiver user
@@ -92,7 +119,7 @@ export const acceptContactRequest = async (req, res) => {
           addedAt: new Date(),
         },
       },
-      pull: {
+      $pull: {
         "contactRequests.sent": { user: userID },
       },
     });
@@ -108,7 +135,7 @@ export const acceptContactRequest = async (req, res) => {
 export const rejectContactRequest = async (req, res) => {
   try {
     const userID = req.user._id;
-    const { senderID } = req.body;
+    const { senderID } = req.query;
 
     // receiver reject
     await User.findByIdAndUpdate(userID, {
@@ -139,10 +166,10 @@ export const getContactRequests = async (req, res) => {
       .populate("contactRequests.received.user", "nickName fullName profilePic")
       .populate("contactRequests.sent.user", "nickName fullName profilePic");
 
-      res.status(200).json({
-        received: user.contactRequests.received,
-        sent: user.contactRequests.sent
-      })
+    res.status(200).json({
+      received: user.contactRequests.received,
+      sent: user.contactRequests.sent,
+    });
   } catch (error) {
     console.log("Error in getContactRequests:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -152,14 +179,14 @@ export const getContactRequests = async (req, res) => {
 // get all contacts
 export const getContacts = async (req, res) => {
   try {
-    const userID = req.user._id
+    const userID = req.user._id;
     const user = await User.findById(userID)
-      .select("contacts") 
+      .select("contacts")
       .populate("contacts.user", "nickName fullName profilePic");
 
-    res.status(200).json(user.contacts); 
+    res.status(200).json(user.contacts);
   } catch (error) {
     console.log("Error in getContacts:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};

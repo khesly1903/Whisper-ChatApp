@@ -49,16 +49,18 @@ function getBackgroundFromStorage() {
 }
 
 function App() {
-  const { authUser, checkAuth, isCheckingAuth, onlineUsers} = useAuthStore();
-  console.log(onlineUsers)
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  console.log(onlineUsers);
 
   const [currentTheme, setCurrentTheme] = useState(() => getThemeFromStorage());
-  const [currentBackground, setCurrentBackground] = useState(() => getBackgroundFromStorage()); // Background state'i ekle
+  const [currentBackground, setCurrentBackground] = useState(() =>
+    getBackgroundFromStorage()
+  ); // Background state'i ekle
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  
+
   console.log({ authUser });
 
   // Theme için localStorage
@@ -95,8 +97,13 @@ function App() {
           /> */}
           <Route
             path="/"
-            element={authUser ? <ChatPage 
-            currentBackground={currentBackground} /> : <Navigate to="/login" />}
+            element={
+              authUser ? (
+                <ChatPage currentBackground={currentBackground} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/signup"
@@ -109,13 +116,16 @@ function App() {
           <Route
             path="/settings"
             element={
-              authUser ? 
-              <SettingsPage
-                currentTheme={currentTheme}
-                setCurrentTheme={setCurrentTheme}
-                currentBackground={currentBackground} // Background prop'ları ekle
-                setCurrentBackground={setCurrentBackground}
-              /> : <Navigate to="/"/>
+              authUser ? (
+                <SettingsPage
+                  currentTheme={currentTheme}
+                  setCurrentTheme={setCurrentTheme}
+                  currentBackground={currentBackground} // Background prop'ları ekle
+                  setCurrentBackground={setCurrentBackground}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
             }
           />
           <Route
@@ -123,7 +133,12 @@ function App() {
             element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
           />
         </Routes>
-        <Toaster />
+        <Toaster
+          position="top-center"
+          containerStyle={{
+            zIndex: 999999, 
+          }}
+        />
       </ConfigProvider>
     </ThemeContext.Provider>
   );

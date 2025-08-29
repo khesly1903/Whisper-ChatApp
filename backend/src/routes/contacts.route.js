@@ -3,6 +3,7 @@ import express from "express"
 import {
 sendContactRequest, 
   acceptContactRequest, 
+  cancelContactRequest,
   rejectContactRequest, 
   getContactRequests,
   getContacts     
@@ -15,6 +16,7 @@ const router = express.Router()
 
 router.post("/sendContactRequest",protectRoute,sendContactRequest)
 router.post("/acceptContactRequest",protectRoute,acceptContactRequest)
+router.post("/cancelContactRequest",protectRoute,cancelContactRequest)
 router.post("/rejectContactRequest",protectRoute,rejectContactRequest)
 router.get("/getContactRequests",protectRoute,getContactRequests)
 router.get("/getContacts",protectRoute,getContacts)
