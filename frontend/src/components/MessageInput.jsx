@@ -9,7 +9,7 @@ const { TextArea } = Input
 
 export default function MessageInput() {
 
-  const theme = useContext(ThemeContext);
+  const {currentTheme} = useContext(ThemeContext);
 
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
@@ -75,7 +75,7 @@ export default function MessageInput() {
         <div style={{
           width: "100%",
           height: "10rem",
-          background: theme.themeInfo.backgroundSecondary,
+          background: currentTheme.themeInfo.backgroundSecondary,
           borderTop: "1px solid silver",
           display: "flex",
           justifyContent: "center",
@@ -128,8 +128,8 @@ export default function MessageInput() {
       <form onSubmit={handleSendMessage}
         style={{
           padding: '1rem',
-          backgroundColor: theme.themeInfo.backgroundSecondary,
-          borderTop: `3px solid ${theme.themeInfo.backgroundPrimary}`,
+          backgroundColor: currentTheme.themeInfo.backgroundSecondary,
+          borderTop: `3px solid ${currentTheme.themeInfo.backgroundPrimary}`,
           borderRadius:"1rem 1rem 0rem 0rem",
           boxShadow: "0px -8px 20px 1px rgba(0,0,0,0.54)"
 

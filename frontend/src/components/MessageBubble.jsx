@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
 export function MessageBubble({ side = "left", children, image, text }) {
-  const theme = useContext(ThemeContext);
+  const {currentTheme} = useContext(ThemeContext);
 
   const baseStyle = {
     maxWidth: "60%",
@@ -14,9 +14,9 @@ export function MessageBubble({ side = "left", children, image, text }) {
     display: "inline-block",
     background:
       side === "left"
-        ? theme?.themeInfo?.colorPrimary || "#f0f0f0"
-        : theme?.themeInfo?.colorSecondary || "#1677ff",
-    color: theme?.themeInfo?.colorText 
+        ? currentTheme.themeInfo.colorPrimary || "#f0f0f0"
+        : currentTheme.themeInfo.colorSecondary || "#1677ff",
+    color: currentTheme.themeInfo.colorText 
   };
 
   const imageStyle = {

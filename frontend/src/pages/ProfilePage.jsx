@@ -12,6 +12,7 @@ function ProfilePage() {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
   const { Title } = Typography;
   const [fullName, setFullName] = useState(authUser.fullName);
+  const [nickName, setNickName] = useState(authUser.nickName);
 
   // convert to base64
   const getBase64 = (file, callback) => {
@@ -83,8 +84,17 @@ function ProfilePage() {
           >
             {fullName}
           </Title>
-          <Title level={5} style={{marginTop: "-1rem"}}>
-            @{authUser?.nickName}
+          <Title
+            editable={{
+              onChange: async (val) => {
+                setNickName(val);
+                await updateProfile({ nickName: val });
+              },
+            }}
+            level={5}
+            style={{ marginTop: "-1rem" }}
+          >
+            {nickName}
           </Title>
         </div>
       </div>

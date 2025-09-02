@@ -124,7 +124,7 @@ export const updateProfile = async (req, res) => {
     const userId = req.user._id;
 
     // En az bir alan dolu olmalı
-    if (!profilePic && !fullName) {
+    if (!profilePic && !fullName && !nickName) {
       return res.status(400).json({
         message: "At least one field (profilePic or fullName) is required",
       });
@@ -150,20 +150,23 @@ export const updateProfile = async (req, res) => {
       updateFields.fullName = fullName.trim();
     }
 
+
     // nickName kontrolü ve uniqueness
-    const existingUser = await User.findOne({ nickName: nickName });
-    if (existingUser && existingUser._id.toString() !== userId) {
-      return res.status(400).json({ message: "Nickname already taken" });
-    }
 
     if (nickName) {
-      if (nickName.trim().length < 4) {
-        return res.status(400)
-          .json({ message: "Full name must be at least 6 characters long" });
+      const existingUser = await User.findOne({ nickName: nickName.trim() });
+      if (existingUser && existingUser._id.toString() !== userId.toString()) {
+        return res.status(400).json({ message: "Nickname already taken" });
       }
-      updateFields.nickName = nickName.trim()
+
+      if (nickName.trim().length < 6) {
+        return res.status(400).json({
+          message: "Nickname must be at least 6 characters long",
+        });
       }
-    
+
+      updateFields.nickName = nickName.trim();
+    }
 
     // Kullanıcıyı güncelle
     const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
@@ -180,6 +183,50 @@ export const updateProfile = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server Error in Updating Profile" });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { password, newPassword } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findOne({ _id: userId });
+    const isOldPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isOldPasswordCorrect) {
+      return res.status(404).json({
+        message: "Current password is wrong!",
+      });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(newPassword, user.password);
+
+    if (isPasswordCorrect) {
+      return res.status(404).json({
+        message: "New password must be different from the current password. ",
+      });
+    }
+
+    // hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { password: hashedNewPassword },
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("Error in updateProfile:", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error in Changing password" });
   }
 };
 

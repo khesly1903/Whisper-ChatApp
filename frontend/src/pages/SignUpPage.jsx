@@ -16,7 +16,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 function SignUpPage() {
   const { Title, Text } = Typography;
-  const theme = useContext(ThemeContext);
+  const {currentTheme} = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     fullName: "",
     nickName: "",
@@ -76,7 +76,7 @@ function SignUpPage() {
   };
 
   return (
-    <div className="account-container center-flex" style={{background: theme?.themeInfo?.backgroundPrimary}}>
+    <div className="account-container center-flex" style={{background: currentTheme?.themeInfo?.backgroundPrimary}}>
       <form className="account center-flex" onSubmit={handleSubmit}>
         <Title level={2}>Sign Up</Title>
         <Input

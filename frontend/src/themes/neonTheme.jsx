@@ -4,7 +4,7 @@ export const neonTheme = {
     colorPrimary: "#00ffe7",         // Neon mavi
     colorBgBase: "#0a0a23",          // Siyah-mor zemin
     colorBgLayout: "#1a0033",        // Koyu mor
-    colorTextBase: "#e0e0ff",        // Açık mavi-beyaz
+    colorTextBase: "#fff4e0ff",        // Açık mavi-beyaz
     colorBorder: "#ff00cc",          // Neon pembe
     borderRadius: 10,
     colorTextPlaceholder: "#00ffe7",

@@ -12,6 +12,7 @@ export const useAuthStore = create((set, get) => ({
   isSigninUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
+  isChangingPassword: false,
   isCheckingAuth: true,
   isSearchingUser: false,
   onlineUsers: [],
@@ -47,7 +48,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   searchUser: async (nickname) => {
-    set({ isSearchingUser: true});
+    set({ isSearchingUser: true });
     try {
       const res = await axiosInstance.get(
         `/auth/searchUser?nickName=${nickname}`
@@ -98,12 +99,14 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: res.data });
 
       // send message based on what was updated
-      if (data.profilePic && data.fullName) {
+      if (data.profilePic && data.fullName && data.nickName) {
         toast.success("Profile updated successfully");
       } else if (data.profilePic) {
         toast.success("Profile picture updated successfully");
       } else if (data.fullName) {
         toast.success("Name updated successfully");
+      } else if (data.nickName) {
+        toast.success("Nickname updated successfully");
       }
     } catch (error) {
       console.log("Error in updateProfile:", error);
@@ -118,7 +121,20 @@ export const useAuthStore = create((set, get) => ({
       set({ isUpdatingProfile: false });
     }
   },
+  changePassword: async (data) => {
+    set({ isChangingPassword: true });
 
+    try {
+      const res = await axiosInstance.put("/auth/changePassword", data)
+      set({authUser: res.data})
+      toast.success("Password changed successfully")
+    } catch (error) {
+      console.log("Error in changePassword:", error);
+      toast.error(error.response.data.message)
+    } finally {
+      set({ isChangingPassword: false });
+    }
+  },
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;

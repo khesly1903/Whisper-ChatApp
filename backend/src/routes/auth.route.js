@@ -1,5 +1,5 @@
 import express from "express"
-import { checkAuth, login, logout, signup, updateProfile, searchUser} from "../controllers/auth.controller.js"
+import { checkAuth, login, logout, signup, updateProfile, searchUser, changePassword} from "../controllers/auth.controller.js"
 import { protectRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router()
@@ -13,9 +13,9 @@ router.post("/logout", logout)
 
 // profile update
 router.put("/updateProfile", protectRoute, updateProfile)
+router.put("/changePassword", protectRoute, changePassword)
 
 // eg, if the user refresh the page, need to know that user auth or not
-// basic control
 router.get("/check", protectRoute, checkAuth)
 
 // search user by nickname

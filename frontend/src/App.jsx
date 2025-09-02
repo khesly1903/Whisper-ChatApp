@@ -88,7 +88,7 @@ function App() {
   if (isCheckingAuth && !authUser) return <Spin spinning={true} fullscreen />;
 
   return (
-    <ThemeContext.Provider value={currentTheme}>
+    <ThemeContext.Provider value={{ currentTheme, setCurrentTheme, currentBackground, setCurrentBackground }}>
       <ConfigProvider theme={currentTheme}>
         <Routes>
           {/* <Route

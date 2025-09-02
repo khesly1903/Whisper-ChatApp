@@ -11,8 +11,8 @@ export const classicalLight = {
   },
   components: {
     Button: {
-      colorPrimary: "#1677ff",
-      colorText: "#fff",
+      colorPrimary: "#E6CFA9",
+      colorText: "#676565ff",
       colorBorder: "#1677ff",
       borderRadius: 8,
     },
@@ -23,11 +23,12 @@ export const classicalLight = {
       colorTextPlaceholder: "#bfbfbf",
       borderRadius: 8,
     },
+    
   },
   themeInfo: {
     themeName: "Light",
-    backgroundPrimary: "#ffffff",
-    backgroundSecondary: "#f5f5f5",
+    backgroundPrimary: "#F6F1E9",
+    backgroundSecondary: "#F0EBE3",
     colorPrimary: "#C5D3E8",
     colorSecondary: "#C9E9D2",
     colorText: "#1f1f1f"

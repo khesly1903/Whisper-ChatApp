@@ -8,7 +8,7 @@ const { Text } = Typography;
 
 export default function ChatHeader() {
 
-  const theme = useContext(ThemeContext);
+  const {currentTheme} = useContext(ThemeContext);
 
   const { selectedUser, setSelectedUser } = useChatStore()
 
@@ -32,11 +32,11 @@ export default function ChatHeader() {
 
   return (
     <div style={{ 
-      background:theme.themeInfo.backgroundSecondary, 
+      background:currentTheme.themeInfo.backgroundSecondary, 
       width: "100%", 
       height: "4rem",
       padding: "0 1rem",
-      borderBottom: `3px solid ${theme.themeInfo.backgroundPrimary}`,
+      borderBottom: `3px solid ${currentTheme.themeInfo.backgroundPrimary}`,
       borderRadius:"0rem 0rem 1rem 1rem",
       boxShadow: "0px 8px 20px 1px rgba(0,0,0,0.54)"
     }}>

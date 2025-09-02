@@ -8,7 +8,7 @@ import { MessageBubble } from "../components/MessageBubble";
 
 function ChatContainer() {
 
-    const theme = useContext(ThemeContext);
+    const {currentTheme} = useContext(ThemeContext);
     const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore()
     const messagesEndRef = useRef(null);
 
@@ -69,7 +69,7 @@ function ChatContainer() {
                         justifyContent: 'center',
                         alignItems: 'center',
                         height: '100%',
-                        color: theme?.themeInfo?.colorText
+                        color: currentTheme?.themeInfo?.colorText
                     }}>
                         No messages yet. Start a conversation!
                     </div>

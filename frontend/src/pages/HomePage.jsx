@@ -3,7 +3,7 @@ import SidebarLayout2 from "./SidebarLayout2";
 import { useChatStore } from "../store/useChatStore";
 import NoChatSelected from "../components/NoChatSelected";
 import ChatContainer from "../components/ChatContainer";
-import Navbar from "../components/Navbar";
+// import Navbar from "../components/Navbar";
 import Chatbar from "../components/Chatbar";
 
 function HomePage() {
@@ -13,7 +13,7 @@ function HomePage() {
     //   {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
     // </SidebarLayout2>
 
-    <Navbar>
+    // <Navbar>
       <Chatbar>
         {!selectedUser ? (
 
@@ -28,7 +28,7 @@ function HomePage() {
           <ChatContainer />
         )}
       </Chatbar>
-    </Navbar>
+    // </Navbar>
   );
 }
 
