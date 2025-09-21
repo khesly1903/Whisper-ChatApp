@@ -118,6 +118,7 @@ export default function ProfileSettings() {
                 width="16rem"
                 height="16rem"
                 style={{ borderRadius: "2rem" }}
+                preview={false}
               />
             ) : (
               <Avatar shape="square" size={250} icon={<UserOutlined />} />

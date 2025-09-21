@@ -12,8 +12,11 @@ export const useContactStore = create((set) => ({
   isGettingRequests: false,
 
   getContacts: async () => {
-    set({ isContactsLoading: true });
-
+    // set({ isContactsLoading: true });
+    // isContactsLoading is comment line rn bcs 
+    // when new message came, chatbar need to get into useEffect
+    // but everytime Loading animation is boring
+    // TODO: find a better solution
     try {
       const res = await axiosInstance.get("/contacts/getContacts");
       console.log("Contacts:", res.data);
@@ -21,7 +24,7 @@ export const useContactStore = create((set) => ({
     } catch (error) {
       toast.error(error.response.data.messages);
     } finally {
-      set({ isContactsLoading: false });
+      // set({ isContactsLoading: false });
     }
   },
 
@@ -85,4 +88,15 @@ export const useContactStore = create((set) => ({
       toast.error("Error:", error);
     }
   },
+
+  removeContact : async (receiverID) => {
+    try {
+      const res = await axiosInstance.post(`/contacts/removeContact?receiverID=${receiverID}`)
+      toast.success(res.data.message)
+    } catch (error) {
+      toast.error("Error:", error);
+    }
+  }, 
+  
 }));
+

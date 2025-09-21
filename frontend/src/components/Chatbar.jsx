@@ -5,6 +5,7 @@ import { useContactStore } from "../store/useContactStore";
 import { Link, Navigate } from "react-router-dom";
 import ChatbarSkeleton from "./skeletons/ChatbarSkeleton";
 import { Avatar, Badge, Button, Input, Collapse } from "antd";
+import { formatTime } from "../utils";
 import {
   SettingOutlined,
   UserOutlined,
@@ -18,7 +19,7 @@ import ProfileSettings from "./ProfileSettings";
 import ThemeSettings from "./ThemeSettings";
 
 function Chatbar({ children }) {
-  const { selectedUser, setSelectedUser } = useChatStore();
+  const { messages, selectedUser, setSelectedUser } = useChatStore();
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showThemeSettings, setShowThemeSettings] = useState(false);
 
@@ -56,14 +57,9 @@ function Chatbar({ children }) {
     }
   };
 
-  // //get contacts
-  // useEffect(() => {
-  //   getUsers();
-  // }, [getUsers]);
-
   useEffect(() => {
     getContacts();
-  }, [getContacts]);
+  }, [getContacts, messages]);
 
   useEffect(() => {
     getRequests();
@@ -72,6 +68,7 @@ function Chatbar({ children }) {
   const handleAcceptRequest = async (senderID) => {
     await acceptRequest(senderID);
     getRequests();
+    getContacts();
   };
 
   const handleRejectRequest = async (senderID) => {
@@ -129,7 +126,9 @@ function Chatbar({ children }) {
         <Collapse activeKey={["1"]}>
           <Collapse.Panel
             header={
-              <div style={{ textAlign: "center", width: "100%" }}>{authUser.fullName}</div>
+              <div style={{ textAlign: "center", width: "100%" }}>
+                {authUser.fullName}
+              </div>
             }
             key={1}
             showArrow={false}
@@ -487,65 +486,130 @@ function Chatbar({ children }) {
               <ChatbarSkeleton />
             ) : (
               <>
-                {contacts.map((contact) => (
-                  <div
-                    key={contact.user._id}
-                    onClick={() => (
-                      setSelectedUser(contact.user),
-                      setShowProfileSettings(false),
-                      setShowThemeSettings(false)
-                    )}
-                    style={{
-                      height: "4rem",
-                      padding: "0.5em",
-                      cursor: "pointer",
-
-                      borderRadius: "0.5em",
-                      backgroundColor:
-                        selectedUser?._id === contact.user._id
-                          ? currentTheme.themeInfo.backgroundSecondary
-                          : "transparent",
-                      color: currentTheme?.themeInfo?.colorText,
-                      border:
-                        selectedUser?._id === contact.user._id
-                          ? `1px solid ${currentTheme.themeInfo.colorSecondary}`
-                          : "none",
-                    }}
-                  >
+                {[...contacts]
+                  .sort((a, b) => {
+                    const timeA = new Date(a.lastMessageTime || 0);
+                    const timeB = new Date(b.lastMessageTime || 0);
+                    return timeB - timeA; // büyükten küçüğe (son yazışma en üstte)
+                  })
+                  .map((contact) => (
                     <div
+                      key={contact.user._id}
+                      onClick={() => (
+                        setSelectedUser(contact.user),
+                        setShowProfileSettings(false),
+                        setShowThemeSettings(false)
+                      )}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
+                        height: "4rem",
+                        padding: "0.5em",
+                        cursor: "pointer",
+                        width: "100%",
+                        borderRadius: "0.5em",
+                        backgroundColor:
+                          selectedUser?._id === contact.user._id
+                            ? currentTheme.themeInfo.backgroundSecondary
+                            : "transparent",
+                        color: currentTheme?.themeInfo?.colorText,
+                        border:
+                          selectedUser?._id === contact.user._id
+                            ? `1px solid ${currentTheme.themeInfo.colorSecondary}`
+                            : "none",
                       }}
                     >
-                      {contact.user.profilePic ? (
-                        <Badge
-                          dot={onlineUsers.includes(contact.user._id)}
-                          status="success"
-                          size="small"
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                          width: "100%",
+                        }}
+                      >
+                        {contact.user.profilePic ? (
+                          <Badge
+                            dot={onlineUsers.includes(contact.user._id)}
+                            status="success"
+                            size="small"
+                          >
+                            <Avatar
+                              src={contact.user.profilePic}
+                              shape="square"
+                            />
+                          </Badge>
+                        ) : (
+                          <Badge
+                            dot={onlineUsers.includes(contact.user._id)}
+                            status="success"
+                          >
+                            <Avatar
+                              shape="square"
+                              size={"16rem"}
+                              icon={<UserOutlined />}
+                            />
+                          </Badge>
+                        )}
+                        <div
+                          style={{
+                            // display: "flex",
+                            // flexDirection: "column",
+                            width: "80%",
+                          }}
                         >
-                          <Avatar
-                            src={contact.user.profilePic}
-                            shape="square"
-                          />
-                        </Badge>
-                      ) : (
-                        <Badge
-                          dot={onlineUsers.includes(contact.user._id)}
-                          status="success"
-                        >
-                          <Avatar
-                            shape="square"
-                            size={"16rem"}
-                            icon={<UserOutlined />}
-                          />
-                        </Badge>
-                      )}
-                      {contact.user.fullName}
+                          {contact.lastMessage || contact.lastMessageTime ? (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "100%",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  flexGrow: 1,
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  marginRight: "0.5rem",
+                                }}
+                              >
+                                {contact.user.fullName}
+                              </div>
+                              <div
+                                style={{
+                                  flexShrink: 0,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {formatTime(contact.lastMessageTime)}
+                              </div>
+                            </div>
+                          ) : (
+                            <div
+                              style={{
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {contact.user.fullName}
+                            </div>
+                          )}
+
+                          <div
+                            style={{
+                              width: "75%",
+                              whiteSpace: "nowrap",
+                              display: "block",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {contact.lastMessage || "No messages yet"}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </>
             )}
           </Collapse.Panel>

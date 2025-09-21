@@ -122,140 +122,159 @@ function ThemeSettings() {
           padding: "1rem",
         }}
       >
-        {/* THEME */}
-        <Collapse
-          style={{ backgroundColor: currentTheme.themeInfo.backgroundPrimary }}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+          }}
         >
-          <Collapse.Panel
-            header={
-              <div style={{ textAlign: "center", width: "100%" }}>Theme</div>
-            }
-            key="1"
+          {/* THEME */}
+          <Collapse
+            activeKey={["1"]}
+            style={{
+              backgroundColor: currentTheme.themeInfo.backgroundPrimary,
+              width: "50%",
+            }}
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)", // 4 sütun
-                gap: "1rem",
-                justifyItems: "center",
-              }}
+            <Collapse.Panel
+              showArrow={false}
+              header={
+                <div style={{ textAlign: "center", width: "100%" }}>Theme</div>
+              }
+              key="1"
             >
-              {themes.map((theme, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setCurrentTheme(theme.themeObj)}
-                  style={{
-                    cursor: "pointer",
-                    width: "100%", // grid hücresini kaplasın
-                    maxWidth: "30rem", // çok büyümesin diye sınır koyduk
-                    borderRadius: "0.5rem",
-                    overflow: "hidden",
-                    border: `1px solid ${theme.backgroundPrimary}`,
-                    background: theme.backgroundPrimary,
-                    color: theme.colorText,
-                    textAlign: "center",
-                  }}
-                >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)", // 4 sütun
+                  gap: "1rem",
+                  justifyItems: "center",
+                }}
+              >
+                {themes.map((theme, idx) => (
                   <div
+                    key={idx}
+                    onClick={() => setCurrentTheme(theme.themeObj)}
                     style={{
-                      height: "2.5rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: theme.backgroundSecondary,
-                      fontSize: "1.2rem",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {theme.themeName}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      gap: "0.5rem",
-                      padding: "0.5rem",
+                      cursor: "pointer",
+                      width: "100%", // grid hücresini kaplasın
+                      maxWidth: "30rem", // çok büyümesin diye sınır koyduk
+                      borderRadius: "0.5rem",
+                      overflow: "hidden",
+                      border: `1px solid ${theme.backgroundPrimary}`,
+                      background: theme.backgroundPrimary,
+                      color: theme.colorText,
+                      textAlign: "center",
                     }}
                   >
                     <div
                       style={{
-                        width: "33%",
-                        maxWidth: "5rem",
-                        height: "3rem",
-                        borderRadius: "20%",
-                        backgroundColor: theme.backgroundSecondary,
+                        height: "2.5rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: theme.backgroundSecondary,
+                        fontSize: "1.2rem",
+                        fontWeight: "500",
                       }}
-                    />
+                    >
+                      {theme.themeName}
+                    </div>
                     <div
                       style={{
-                        width: "33%",
-                        maxWidth: "5rem",
-                        height: "3rem",
-                        borderRadius: "20%",
-                        backgroundColor: theme.colorPrimary,
+                        display: "flex",
+                        justifyContent: "space-around",
+                        gap: "0.5rem",
+                        padding: "0.5rem",
                       }}
-                    />
-                    <div
-                      style={{
-                        width: "33%",
-                        maxWidth: "5rem",
-                        height: "3rem",
-                        borderRadius: "20%",
-                        backgroundColor: theme.colorSecondary,
-                      }}
-                    />
+                    >
+                      <div
+                        style={{
+                          width: "33%",
+                          maxWidth: "5rem",
+                          height: "2rem",
+                          borderRadius: "20%",
+                          backgroundColor: theme.backgroundSecondary,
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: "33%",
+                          maxWidth: "5rem",
+                          height: "2rem",
+                          borderRadius: "20%",
+                          backgroundColor: theme.colorPrimary,
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: "33%",
+                          maxWidth: "5rem",
+                          height: "2rem",
+                          borderRadius: "20%",
+                          backgroundColor: theme.colorSecondary,
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </Collapse.Panel>
-        </Collapse>
-
-        <div style={{ margin: "1rem" }}></div>
-
-        {/* BACKGROUND */}
-        <Collapse
-          style={{ backgroundColor: currentTheme.themeInfo.backgroundPrimary }}
-        >
-          <Collapse.Panel
-            header={
-              <div style={{ textAlign: "center", width: "100%" }}>
-                Background
+                ))}
               </div>
-            }
-            key={1}
+            </Collapse.Panel>
+          </Collapse>
+
+          <div style={{ margin: "1rem" }}></div>
+
+          {/* BACKGROUND */}
+          <Collapse
+            activeKey={["1"]}
+            style={{
+              backgroundColor: currentTheme.themeInfo.backgroundPrimary,
+              width: "50%",
+            }}
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)", // 4 sütun
-                gap: "1rem",
-                width: "100%",
-              }}
+            <Collapse.Panel
+              showArrow={false}
+              header={
+                <div style={{ textAlign: "center", width: "100%" }}>
+                  Background
+                </div>
+              }
+              key={1}
             >
-              {backgroundList.map(([id, bgUrl]) => (
-                <div
-                  key={id}
-                  onClick={() => setCurrentBackground(id)}
-                  style={{
-                    width: "100%", // grid hücresine oturur
-                    height: "5rem",
-                    backgroundColor: currentTheme.themeInfo.backgroundPrimary,
-                    backgroundImage: bgUrl,
-                    backgroundPosition: "center",
-                    border:
-                      currentBackground === id
-                        ? `3px solid ${currentTheme.themeInfo.colorPrimary}`
-                        : "1px solid #ccc",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
-                  title={`Background ${id}`}
-                />
-              ))}
-            </div>
-          </Collapse.Panel>
-        </Collapse>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)", // 4 sütun
+                  gap: "1rem",
+                  width: "100%",
+                }}
+              >
+                {backgroundList.map(([id, bgUrl]) => (
+                  <div
+                    key={id}
+                    onClick={() => setCurrentBackground(id)}
+                    style={{
+                      width: "100%", // grid hücresine oturur
+                      height: "5rem",
+                      backgroundColor: currentTheme.themeInfo.backgroundPrimary,
+                      backgroundImage: bgUrl,
+                      backgroundPosition: "center",
+                      border:
+                        currentBackground === id
+                          ? `3px solid ${currentTheme.themeInfo.colorPrimary}`
+                          : "1px solid #ccc",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
+                    title={`Background ${id}`}
+                  />
+                ))}
+              </div>
+            </Collapse.Panel>
+          </Collapse>
+        </div>
+
         {/* DEMO */}
         <div className="center-flex">
           <div

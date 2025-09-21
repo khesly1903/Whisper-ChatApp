@@ -12,7 +12,13 @@ export const getUsersForSidebar = async (req, res) => {
     // and not select the passwords
     const filteredUsers = await User.find({
       _id: { $ne: loggedInUserID },
-    }).select("-password");
+    })
+      .select("-password")
+      .populate("contacts.user", "nickName fullName profilePic") // contact user bilgileri
+      .populate({
+        path: "contacts.lastMessage",
+        select: "text image createdAt",
+      });
 
     res.status(200).json(filteredUsers);
   } catch (error) {
@@ -67,8 +73,6 @@ export const sendMessage = async (req, res) => {
         .json({ message: "You can only send messages to your contacts" });
     }
 
-    
-
     // if message includes image
     let imageUrl;
     if (image) {
@@ -87,6 +91,44 @@ export const sendMessage = async (req, res) => {
 
     //save to db
     await newMessage.save();
+
+    // add the last msg for contact sidebar
+    let lastMsg = ""
+
+    if (text && image) {
+      lastMsg = `📷 ${text}`
+    } else if (text) {
+      lastMsg = text
+    } else if (image) {
+      lastMsg = `📷 Image`
+    }
+    // for sender
+    await User.updateOne(
+      { _id: senderID },
+      {
+        $set: {
+          "contacts.$[elem].lastMessage":lastMsg,
+          "contacts.$[elem].lastMessageTime": new Date(),
+        },
+      },
+      {
+        arrayFilters: [{ "elem.user": receiverID }],
+      }
+    );
+
+    // for the receiver
+    await User.updateOne(
+      { _id: receiverID },
+      {
+        $set: {
+          "contacts.$[elem].lastMessage": lastMsg,
+          "contacts.$[elem].lastMessageTime": new Date(),
+        },
+      },
+      {
+        arrayFilters: [{ "elem.user": senderID }],
+      }
+    );
 
     // realtime functionality
     const receiverSocketId = getReceiverSocketId(receiverID);

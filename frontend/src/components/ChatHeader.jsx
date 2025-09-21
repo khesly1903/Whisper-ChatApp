@@ -1,45 +1,65 @@
-import React, { useContext } from 'react'
-import { useChatStore } from '../store/useChatStore'
-import { Avatar, Space, Flex, Typography, Image} from 'antd'
-import { CloseCircleOutlined, UserOutlined } from "@ant-design/icons";
-import { ThemeContext } from '../context/ThemeContext';
+import React, { useContext } from "react";
+import { useChatStore } from "../store/useChatStore";
+import { Avatar, Space, Flex, Typography, Image } from "antd";
+import {
+  CloseCircleOutlined,
+  UserOutlined,
+  UserDeleteOutlined,
+} from "@ant-design/icons";
+import { ThemeContext } from "../context/ThemeContext";
+import { useContactStore } from "../store/useContactStore";
 
 const { Text } = Typography;
 
 export default function ChatHeader() {
+  const { currentTheme } = useContext(ThemeContext);
 
-  const {currentTheme} = useContext(ThemeContext);
+  const { selectedUser, setSelectedUser } = useChatStore();
 
-  const { selectedUser, setSelectedUser } = useChatStore()
+  const { removeContact } = useContactStore();
 
   const handleProfilePic = () => {
     if (selectedUser.profilePic) {
       // click to preview but z index problem ???
-      return <Image src={selectedUser.profilePic} width={"2rem"} height={"2rem"} preview="false"
-              style={{ 
-                borderRadius: "8px"
-              }}/>
+      return (
+        <Image
+          src={selectedUser.profilePic}
+          width={"2rem"}
+          height={"2rem"}
+          preview="false"
+          style={{
+            borderRadius: "8px",
+          }}
+        />
+      );
       // return <Avatar src={selectedUser.profilePic} size={40} shape="square" />
+    } else {
+      return <Avatar icon={<UserOutlined />} size={40} shape="square" />;
     }
-    else {
-      return <Avatar icon={<UserOutlined />} size={40} shape="square" />
-    }
-  }
+  };
 
   const handleUnselectUser = () => {
-    setSelectedUser(null)
-  }
+    setSelectedUser(null);
+  };
+
+  const handleRemoveContact = async () => {
+    const receiverID = selectedUser._id;
+    removeContact(receiverID);
+    setSelectedUser(null);
+  };
 
   return (
-    <div style={{ 
-      background:currentTheme.themeInfo.backgroundSecondary, 
-      width: "100%", 
-      height: "4rem",
-      padding: "0 1rem",
-      borderBottom: `3px solid ${currentTheme.themeInfo.backgroundPrimary}`,
-      borderRadius:"0rem 0rem 1rem 1rem",
-      boxShadow: "0px 8px 20px 1px rgba(0,0,0,0.54)"
-    }}>
+    <div
+      style={{
+        background: currentTheme.themeInfo.backgroundSecondary,
+        width: "100%",
+        height: "4rem",
+        padding: "0 1rem",
+        borderBottom: `3px solid ${currentTheme.themeInfo.backgroundPrimary}`,
+        borderRadius: "0rem 0rem 1rem 1rem",
+        boxShadow: "0px 8px 20px 1px rgba(0,0,0,0.54)",
+      }}
+    >
       <Flex justify="space-between" align="center" style={{ height: "100%" }}>
         {/* Profile picture and username */}
         <Space size="middle" align="center">
@@ -49,18 +69,28 @@ export default function ChatHeader() {
           </Text>
         </Space>
 
-        {/* Close button */}
-        <CloseCircleOutlined 
-          onClick={handleUnselectUser}
-          style={{ 
-            fontSize: "2rem", 
-            cursor: "pointer",
-            color: "#8c8c8c",
-            transition: "color 0.3s"
-          }}
-          
-        />
+        <div style={{display:"flex", gap:"3rem"}}>
+          <UserDeleteOutlined
+            onClick={handleRemoveContact}
+            style={{
+              fontSize: "2rem",
+              cursor: "pointer",
+              color: "#8c8c8c",
+              transition: "color 0.3s",
+            }}
+          />
+          {/* Close button */}
+          <CloseCircleOutlined
+            onClick={handleUnselectUser}
+            style={{
+              fontSize: "2rem",
+              cursor: "pointer",
+              color: "#8c8c8c",
+              transition: "color 0.3s",
+            }}
+          />
+        </div>
       </Flex>
     </div>
-  )
+  );
 }

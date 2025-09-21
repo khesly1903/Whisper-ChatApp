@@ -54,9 +54,9 @@ export const useAuthStore = create((set, get) => ({
         `/auth/searchUser?nickName=${nickname}`
       );
       set({ searchedUser: res.data });
-      toast.success("Kullanıcı bulundu");
+      toast.success("User found");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Kullanıcı bulunamadı");
+      toast.error(error.response?.data?.message || "User is not found");
       set({ searchedUser: null });
     } finally {
       set({ isSearchingUser: false });

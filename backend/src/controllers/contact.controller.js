@@ -65,6 +65,7 @@ export const sendContactRequest = async (req, res) => {
   }
 };
 
+// cancel sended request
 export const cancelContactRequest = async (req, res) => {
   const userID = req.user._id;
   const { receiverID } = req.query;
@@ -85,6 +86,33 @@ export const cancelContactRequest = async (req, res) => {
     });
 
     res.status(200).json({ message: "Contact request cancelled" });
+  } catch (error) {
+    console.log("Error in cancelContactRequest:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// remove the contact
+export const removeContact = async (req, res) => {
+  const userID = req.user._id;
+  const { receiverID } = req.query;
+
+  try {
+    // remove from user
+    await User.findByIdAndUpdate(userID, {
+      $pull: {
+        contacts: { user: receiverID },
+      },
+    });
+
+    // remove from other side
+    await User.findByIdAndUpdate(receiverID, {
+      $pull: {
+        contacts: { user: userID },
+      },
+    });
+
+    res.status(200).json({ message: "Contact removed" });
   } catch (error) {
     console.log("Error in cancelContactRequest:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -123,6 +151,33 @@ export const acceptContactRequest = async (req, res) => {
         "contactRequests.sent": { user: userID },
       },
     });
+
+    // if accept then for the chatbar
+    // it will look like last message time
+    await User.updateOne(
+      { _id: userID },
+      {
+        $set: {
+          "contacts.$[elem].lastMessageTime": new Date(),
+        },
+      },
+      {
+        arrayFilters: [{ "elem.user": senderID }],
+      }
+    );
+
+    // for the receiver
+    await User.updateOne(
+      { _id: senderID },
+      {
+        $set: {
+          "contacts.$[elem].lastMessageTime": new Date(),
+        },
+      },
+      {
+        arrayFilters: [{ "elem.user": userID }],
+      }
+    );
 
     res.status(200).json({ message: "Contact request accepted" });
   } catch (error) {
